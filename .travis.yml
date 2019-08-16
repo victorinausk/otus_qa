@@ -1,0 +1,5 @@
+language: python
+install: pip3 install nose pylint
+script:
+  - pytest
+  - nosetests && pylint
