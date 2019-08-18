@@ -45,7 +45,7 @@ def test_reversed_list(session_fixture, module_fixture, function_fixture):
     """Проверяем, что функция reverse переворачивает список"""
     mylist = ['first one', 'middle one', 'last one']
     mylist.reverse()
-    first_of_reversed = list[0]
+    first_of_reversed = mylist[0]
     print("\ntest N6")
     assert first_of_reversed == 'last one', print("not passed")
 
