@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+"""Установка кодировки"""
 
 
 def test_item_of_list():
@@ -30,7 +31,7 @@ def test_clear_of_list():
     mylist = ['aa', 'bb', 'cc']
     mylist.clear()
     print("\ntest N4")
-    assert mylist.count() == 0, "test N4 is not passed"
+    assert not mylist, "test N4 is not passed"
 
 
 def test_amount_of_x_in_list():
