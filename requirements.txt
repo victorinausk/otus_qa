@@ -1,3 +1,5 @@
-pytest
-requests
-
+drms==0.5.6
+pytest==3.10.1
+py==1.7.0
+pluggy==0.8.0
+requests==2.20.0
