@@ -1,5 +1,5 @@
 language: python
 install: pip3 install nose pylint
 script:
-  - pytest -v -s hw1/test_one.py
+  - pytest -v -s
   - pylint --disable=C0103,C0111,C0112 */*.py
