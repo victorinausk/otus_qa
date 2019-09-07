@@ -1,8 +1,8 @@
 """ API tests """
 # -*- coding: UTF-8 -*-
 
-import requests
 import pytest
+import requests
 
 
 class ApiClient:
@@ -32,7 +32,7 @@ def pytest_collection_modifyitems(items, config):
 
         config.hook.pytest_deselected(items=deselected)
         items[:] = selected
-        if not items: # check if items is empty
+        if not items:  # check if items is empty
             raise ValueError('Invalid URL.')
 
 
@@ -45,10 +45,12 @@ def dogceo():
     client = ApiClient('https://dog.ceo/api')
     return client
 
+
 @pytest.fixture
 def openbrewery():
     client = ApiClient('https://api.openbrewerydb.org')
     return client
+
 
 @pytest.fixture
 def jph():
