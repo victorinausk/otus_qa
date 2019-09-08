@@ -5,10 +5,9 @@ install:
   - pip install -r requirements.txt
 script:
   - cd hw1
-  - pytest -v -s *.py
+  - pytest -v -s
   - pylint --disable=C0103,C0111,C0112 *.py
   - cd ../hw2
-  - pytest -v -s **/*.py
+  - pytest -v -s
   - pylint --disable=C0103,C0111,C0112 **/*.py
-  - pytest -v -s *.py
   - pylint --disable=C0103,C0111,C0112 *.py
