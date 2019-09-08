@@ -1,0 +1,14 @@
+************* Module */*.py
+*/*.py:1:0: F0001: No module named */*.py (fatal)
+************* Module hw1.test_one
+test_one.py:56:4: C0103: Variable name "s" doesn't conform to snake_case naming style (invalid-name)
+test_one.py:67:4: C0103: Variable name "d" doesn't conform to snake_case naming style (invalid-name)
+test_one.py:74:4: C0103: Variable name "a" doesn't conform to snake_case naming style (invalid-name)
+test_one.py:75:4: C0103: Variable name "b" doesn't conform to snake_case naming style (invalid-name)
+test_one.py:76:4: C0103: Variable name "a" doesn't conform to snake_case naming style (invalid-name)
+test_one.py:76:7: C0103: Variable name "b" doesn't conform to snake_case naming style (invalid-name)
+test_one.py:89:0: C0103: Argument name "x" doesn't conform to snake_case naming style (invalid-name)
+
+------------------------------------------------------------------
+Your code has been rated at 9.01/10 (previous run: 9.01/10, +0.00)
+

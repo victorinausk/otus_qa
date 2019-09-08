@@ -10,3 +10,5 @@ script:
   - cd ../hw2
   - pytest -v -s **/*.py
   - pylint --disable=C0103,C0111,C0112 **/*.py
+  - pytest -v -s *.py
+  - pylint --disable=C0103,C0111,C0112 *.py
