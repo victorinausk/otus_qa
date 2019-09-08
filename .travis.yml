@@ -4,10 +4,7 @@ install:
   - pip install nose pylint
   - pip install -r requirements.txt
 script:
-  - cd hw1
-  - pytest -v -s
-  - pylint --disable=C0103,C0111,C0112 *.py
-  - cd ../hw2
-  - pytest -v -s
-  - pylint --disable=C0103,C0111,C0112 **/*.py
-  - pylint --disable=C0103,C0111,C0112 *.py
+
+  - pytest -v -s ./hw*/
+  - pylint --disable=C0103,C0111,C0112 ./hw*/*.py
+  - pylint --disable=C0103,C0111,C0112 ./hw*/*/*.py
