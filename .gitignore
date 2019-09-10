@@ -105,3 +105,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# env python
+myenv
+myvenv
+python3.6-venv

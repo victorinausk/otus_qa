@@ -1,5 +1,10 @@
 language: python
-install: pip3 install nose pylint
+python: "3.6"
+install:
+  - pip install nose pylint
+  - pip install -r requirements.txt
 script:
-  - pytest
-  - nosetests && pylint
+
+  - pytest -v -s ./hw*/
+  - pylint --disable=C0103,C0111,C0112 ./hw*/*.py
+  - pylint --disable=C0103,C0111,C0112 ./hw*/*/*.py
