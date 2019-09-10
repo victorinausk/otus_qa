@@ -15,4 +15,4 @@ before_script:
   - export PATH=$PATH:$PWD/geckodriver
 script:
   - pytest -v -s ./hw*/
-  - pylint --disable=C0103,C0111,C0112,W0613 ./hw*/*.py
+  - pylint --disable=C0103,C0111,C0112,W0613,R0801 ./hw*/*.py
