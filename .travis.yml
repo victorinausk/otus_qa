@@ -7,4 +7,3 @@ script:
 
   - pytest -v -s ./hw*/
   - pylint --disable=C0103,C0111,C0112 ./hw*/*.py
-  - pylint --disable=C0103,C0111,C0112 ./hw*/*/*.py

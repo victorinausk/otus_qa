@@ -2,14 +2,14 @@
 """Тестирование базовых типов"""
 
 
-def test_item_of_list():
+def test_item_of_list(session_fixture,module_fixture,function_fixture):
     """Проверяем, что 8 элемент списка = 8"""
     mylist = [1, 2, 3, 4, 5, 6, 7, 8]
     print("\ntest N1: ")
     assert mylist[7] == 8, "test N1 is not passed"
 
 
-def test_sum_of_two_strings():
+def test_sum_of_two_strings(session_fixture,module_fixture,function_fixture):
     """Проверяем, что оператор + складывает 2 строки"""
     str1 = 'well'
     str2 = 'done'
