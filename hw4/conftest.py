@@ -6,7 +6,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions, FirefoxOptions
 
-COMPOSE_PATH = "."
+COMPOSE_PATH = "./"
 
 
 @pytest.fixture(scope="module")
