@@ -4,7 +4,7 @@ install:
   - pip install nose pylint
   - pip install -r requirements.txt
 before_script:
-  - wget https://chromedriver.storage.googleapis.com/77.0.3865.40/chromedriver_linux64.zip
+  - wget https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip -d ~/virtualenv/python3.6/bin/
   - export CHROME_BIN=chromium-browser
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-linux64.tar.gz

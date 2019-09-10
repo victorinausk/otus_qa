@@ -15,7 +15,7 @@ def module_fixture(request):
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
     compose.start()
-    time.sleep(10)
+    time.sleep(100)
 
     def fin():
         """Остановка окружения"""
