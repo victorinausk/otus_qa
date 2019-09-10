@@ -3,7 +3,14 @@ python: "3.6"
 install:
   - pip install nose pylint
   - pip install -r requirements.txt
+before_script:
+  - wget https://chromedriver.storage.googleapis.com/77.0.3865.40/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip -d ~/virtualenv/python3.6/bin/
+  - export CHROME_BIN=chromium-browser
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.25.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
 script:
-
   - pytest -v -s ./hw*/
   - pylint --disable=C0103,C0111,C0112 ./hw*/*.py
