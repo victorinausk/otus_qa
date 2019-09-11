@@ -2,6 +2,8 @@
 """HW 3 разметка для Travis"""
 
 import pytest
+
+
 @pytest.fixture(scope="module")
 def module_fixture(request):
     """Расскраска трависа"""

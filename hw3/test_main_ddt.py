@@ -9,4 +9,4 @@ def test_item_of_list(module_fixture):
     """Проверим что есть выходной файл"""
 
     gen_file()
-    assert (os.path.isfile("hw3/result_data.txt"))
+    assert os.path.isfile("hw3/result_data.txt")
