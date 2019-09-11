@@ -10,6 +10,6 @@ def module_fixture(request):
 
     def fin():
         """Тестирование базовых  Фикстур модуль"""
-        print("\nЗакрытие модуля fixture")
+        print("\n")
 
     request.addfinalizer(fin)

@@ -16,11 +16,11 @@ def session_fixture():
 def module_fixture(request):
     """Тестирование базовых  Фикстур модуль"""
     print("\n================================== HW 1 ===============================================================")
-    print("\nМодуль fixture")
+    print("\n")
 
     def fin():
         """Тестирование базовых  Фикстур модуль"""
-        print("\nЗакрытие модуля fixture")
+        print("\n")
 
     request.addfinalizer(fin)
 

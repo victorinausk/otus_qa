@@ -2,7 +2,7 @@
 """HW 3 проверка ДЗ"""
 import os.path
 
-from main_ddt import gen_file
+from hw3.main_ddt import gen_file
 
 
 def test_item_of_list(module_fixture):
