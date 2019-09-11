@@ -12,7 +12,6 @@ COMPOSE_PATH = "./"
 @pytest.fixture(scope="module")
 def module_fixture(request):
     """Запуск окружения"""
-    print("\n================================== HW 4 ===============================================================")
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
     compose.start()
@@ -23,6 +22,7 @@ def module_fixture(request):
         print("\nОстановка docker-compose")
         compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
         compose.stop()
+        print("\n================================== HW 5 ============================================================")
 
     request.addfinalizer(fin)
 
