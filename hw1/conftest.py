@@ -15,6 +15,7 @@ def session_fixture():
 @pytest.fixture(scope="module")
 def module_fixture(request):
     """Тестирование базовых  Фикстур модуль"""
+    print("\n================================== HW 1 ===============================================================")
     print("\nМодуль fixture")
 
     def fin():

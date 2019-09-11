@@ -56,3 +56,16 @@ def openbrewery():
 def jph():
     client = ApiClient('https://jsonplaceholder.typicode.com')
     return client
+
+
+@pytest.fixture(scope="module")
+def module_fixture(request):
+    """Тестирование базовых  Фикстур модуль"""
+    print("\n================================== HW 2 ===============================================================")
+    print("\nМодуль fixture")
+
+    def fin():
+        """Тестирование базовых  Фикстур модуль"""
+        print("\nЗакрытие модуля fixture")
+
+    request.addfinalizer(fin)
