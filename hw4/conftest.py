@@ -22,7 +22,9 @@ def module_fixture(request):
         print("\nОстановка docker-compose")
         compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
         compose.stop()
+        print("\n")
         print("\n================================== HW 5 ============================================================")
+        print("\n")
 
     request.addfinalizer(fin)
 
