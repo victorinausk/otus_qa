@@ -16,8 +16,9 @@ ENDPOINTS = [
     '/breweries?by_state=ohio&sort=type,-name',
 ]
 
+
 @pytest.mark.parametrize('endpoint', ENDPOINTS)
-def test_brewery(openbrewery, endpoint):
+def test_brewery(openbrewery, endpoint, module_fixture):
     """ Test GET requests for https://api.openbrewerydb.org """
     response = openbrewery.do_get(endpoint)
     print(response)

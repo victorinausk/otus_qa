@@ -18,7 +18,7 @@ ENDPOINTS = [
 
 
 @pytest.mark.parametrize('endpoint', ENDPOINTS)
-def test_dogapi(dogceo, endpoint):
+def test_dogapi(dogceo, endpoint, module_fixture):
     """ Test GET requests for https://dog.ceo/api """
     response = dogceo.do_get(endpoint)
     print(response)

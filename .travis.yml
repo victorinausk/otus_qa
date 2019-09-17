@@ -1,10 +1,18 @@
 language: python
 python: "3.6"
+addons:
+  chrome: stable
 install:
   - pip install nose pylint
   - pip install -r requirements.txt
+before_script:
+  - LATEST_CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"`
+  - curl "https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
+  - unzip chromedriver_linux64.zip -d ~/bin
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.25.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
 script:
-
   - pytest -v -s ./hw*/
-  - pylint --disable=C0103,C0111,C0112 ./hw*/*.py
-  - pylint --disable=C0103,C0111,C0112 ./hw*/*/*.py
+  - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301 ./hw*/*.py

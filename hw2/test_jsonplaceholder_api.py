@@ -13,8 +13,9 @@ ENDPOINTS = [
 
 ]
 
+
 @pytest.mark.parametrize('endpoint', ENDPOINTS)
-def test_jph(jph, endpoint):
+def test_jph(jph, endpoint, module_fixture):
     """ Test GET requests for https://api.openbrewerydb.org """
     response = jph.do_get(endpoint)
     print(response)

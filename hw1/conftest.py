@@ -15,11 +15,12 @@ def session_fixture():
 @pytest.fixture(scope="module")
 def module_fixture(request):
     """Тестирование базовых  Фикстур модуль"""
-    print("\nМодуль fixture")
+    print("\n================================== HW 1 ===============================================================")
+    print("\n")
 
     def fin():
         """Тестирование базовых  Фикстур модуль"""
-        print("\nЗакрытие модуля fixture")
+        print("\n")
 
     request.addfinalizer(fin)
 
