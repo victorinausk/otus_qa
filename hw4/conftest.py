@@ -9,13 +9,14 @@ from selenium.webdriver import ChromeOptions, FirefoxOptions
 COMPOSE_PATH = "./"
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module", autouse=True)
 def module_fixture(request):
     """Запуск окружения"""
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
     compose.start()
-    time.sleep(10)
+    compose.wait_for("http://localhost/admin")
+    time.sleep(30)
 
     def fin():
         """Остановка окружения"""
@@ -73,4 +74,4 @@ def pytest_collection_modifyitems(items, config):
 def pytest_addoption(parser):
     """options"""
     parser.addoption('--browser', help='Run tests only for certain browser.')
-    parser.addoption('--opencart_url', default='http://127.0.0.1/')
+    parser.addoption('--opencart_url', default='http://localhost/')
