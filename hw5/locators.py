@@ -23,7 +23,6 @@ class BaseLocators:
 class AdminPageLocators:
     CATALOG = (By.XPATH, '//a[contains(text(), "Catalog")]')
     PRODUCTS = (By.XPATH, '//*[@id="catalog"]/ul/li/a[contains(@href, "product")]')
-    # driver.FindElementByXPath("//*[@id='navMenu']/ul/li/a[contains(@href, 'mysite.com/item/')]").Click()
 
 
 class ProductsPageLocators:

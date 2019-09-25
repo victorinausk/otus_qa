@@ -27,7 +27,6 @@ def login_logout(request, driver, login_page):
 
 def test_login_success(login_page, driver, request):
     """ Test login success """
-    print(driver.current_url)
     login_page.login(login='joe1', password='abc123')
 
     assert 'dashboard' in driver.current_url

@@ -22,15 +22,14 @@ def module_fixture(request):
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
 
-    # compose.start()
-    # compose.wait_for("http://localhost/")
-    # time.sleep(30)
+    compose.start()
+    compose.wait_for("http://localhost/")
 
     def fin():
         """Остановка окружения"""
         print("\nОстановка docker-compose")
         compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
-        # compose.stop()
+        compose.stop()
         print("\n")
         print("\n================================== HW 6 ============================================================")
         print("\n")
