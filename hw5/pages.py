@@ -108,7 +108,6 @@ class ProductsPage(BasePage):
         self.__filter_product(product_name)
         self.__select_product(product_name)
         click_via_script(self.driver, self.driver.find_element(*ProductsPageLocators.DELETE_PRODUCT))
-        self.driver.switch_to.alert
         Alert(self.driver).accept()
 
     def is_products_on_page(self, product_name):
