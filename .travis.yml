@@ -19,5 +19,5 @@ before_script:
   - echo "installed geckodriver binary in $install_dir"
 
 script:
-  - pytest -v -s ./hw*/
+  - pytest -v -s ./hw*/test*.py
   - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301 ./hw*/*.py
