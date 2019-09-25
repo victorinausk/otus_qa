@@ -37,7 +37,7 @@ def module_fixture(request):
     request.addfinalizer(fin)
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='session')
 def driver(request):
     browser = request.config.getoption('--browser')
     if browser == 'chrome':
