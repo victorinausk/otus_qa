@@ -25,10 +25,8 @@ def login_logout(request, driver, login_page):
     request.addfinalizer(logout)
 
 
-def test_login_success(login_page, driver, request):
+def test_login_success(login_logout, driver):
     """ Test login success """
-    login_page.login(login='joe1', password='abc123')
-
     assert 'dashboard' in driver.current_url
 
 
@@ -42,7 +40,7 @@ def test_login_fail(login_page, driver):
     assert 'dashboard' in driver.current_url
 
 
-def test_login_empty(login_page, driver, login_logout):
+def test_login_empty(login_page, driver):
     """ Test login failure: empty username and password """
 
     login_page.clear_username_password()
