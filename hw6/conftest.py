@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions, FirefoxOptions

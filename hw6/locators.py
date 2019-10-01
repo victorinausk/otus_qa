@@ -1,4 +1,4 @@
-""" Opencart locators """
+""" locators """
 # pylint: disable=missing-docstring, too-few-public-methods
 
 from selenium.webdriver.common.by import By

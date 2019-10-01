@@ -1,4 +1,4 @@
-""" Opencart  pages """
+""" pages """
 # pylint: disable=missing-docstring, too-few-public-methods
 
 from selenium.webdriver.common.action_chains import ActionChains
