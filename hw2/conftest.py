@@ -58,7 +58,7 @@ def jph():
     return client
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module", autouse=True)
 def module_fixture(request):
     """Тестирование базовых  Фикстур модуль"""
     print("\n")
