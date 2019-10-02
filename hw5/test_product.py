@@ -81,13 +81,16 @@ def edit_product(request, create_product_to_edit, products_page, edit_product_pa
     yield new_product_name
 
     def cleanup():
+        print(" Cleanup")
         products_page.delete_product(new_product_name)
+        #        products_page.delete_product(product_name=f'"{new_product_name}"')
 
     request.addfinalizer(cleanup)
 
 
 def test_add_product(driver, module_fixture, add_new_product, products_page):
     """ Test add product item """
+
     assert products_page.get_success_alert()
     assert products_page.is_products_on_page(add_new_product)
 
@@ -98,6 +101,6 @@ def test_edit_product(driver, module_fixture, edit_product, products_page):
     assert products_page.is_products_on_page(product_name=edit_product)
 
 
-def test_delete_product(driver, module_fixture, delete_product, products_page):
+def test_delete_product(driver, module_fixture, create_product_to_delete, delete_product, products_page):
     """ Test delete product item """
     assert products_page.get_success_alert()
