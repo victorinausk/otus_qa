@@ -41,7 +41,7 @@ def driver(request):
     browser = request.config.getoption('--browser')
     if browser == 'chrome':
         options = ChromeOptions()
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--start-fullscreen')
         options.accept_insecure_certs = True
         options.accept_untrusted_certs = True
@@ -57,7 +57,7 @@ def driver(request):
         options = FirefoxOptions()
         options.accept_insecure_certs = True
         options.accept_untrusted_certs = True
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         #options.add_argument('start-maximized')
 
         capabilities = DesiredCapabilities.FIREFOX.copy()
@@ -72,6 +72,6 @@ def driver(request):
 
 
 def pytest_addoption(parser):
-    parser.addoption('--browser', help='Set browser name.', default='firefox')
+    parser.addoption('--browser', help='Set browser name.', default='chrome')
     parser.addoption('--opencart_url', default='http://localhost/', help='Set opencart URL.')
     parser.addoption('--implicit_wait', default='10', help='Set the amount (in seconds) for implicit wait.')
