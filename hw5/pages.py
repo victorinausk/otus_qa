@@ -46,6 +46,10 @@ def click_via_script(driver, element: WebElement):
     return driver.execute_script("arguments[0].click();", element)
 
 
+def page_is_loaded(driver):
+    WebDriverWait(driver, 3).until(EC.url_changes)
+
+
 class BasePage:
 
     def __init__(self, driver):
@@ -58,7 +62,7 @@ class LoginPage(BasePage):
         self.driver.find_element(*LoginPageLocators.LOGIN_INPUT).send_keys(login)
         self.driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(password)
         self.driver.find_element(*LoginPageLocators.LOGIN_BUTTON).click()
-        WebDriverWait(self.driver, 3)
+        page_is_loaded(self.driver)
 
     def clear_username_password(self):
         clear_input(self.driver.find_element(*LoginPageLocators.LOGIN_INPUT))
