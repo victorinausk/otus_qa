@@ -194,10 +194,7 @@ class UploadPage(BasePage):
         alert = self.driver.switch_to.alert
         alert_text = alert.text
         alert.accept()
-        if alert_text == "Your file was successfully uploaded!":
-            return True
-        else:
-            return False
+        return bool(alert_text == "Your file was successfully uploaded!")
 
     def save(self):
         click_via_script(self.driver, self.driver.find_element(*BaseLocators.SAVE_BUTTON))
