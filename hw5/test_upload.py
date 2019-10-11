@@ -13,7 +13,7 @@ def find_file(file_name):
 
     rootdir = os.getcwd()
 
-    for subdir, files in os.walk(rootdir):
+    for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             filepath = subdir + os.sep + file
 
