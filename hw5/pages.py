@@ -1,5 +1,7 @@
 """ Opencart pages """
 
+import os
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
@@ -16,6 +18,22 @@ def clear_input(element):
     """ Clear input data """
     element.send_keys(Keys.CONTROL + 'a')
     element.send_keys(Keys.DELETE)
+
+
+def get_filename(filepath):
+    """Return file name from path"""
+    return os.path.basename(filepath)
+
+
+def get_absolute_path(filepath):
+    """Return abs path"""
+    return os.path.abspath(filepath)
+
+
+def set_control_visible(driver, control):
+    return driver.execute_script(
+        'arguments[0].style = ""; arguments[0].style.display = "inline"; arguments[0].style.visibility = "visible";',
+        control)
 
 
 def click_via_script(driver, element: WebElement):
@@ -155,10 +173,25 @@ class EditProductPage(BasePage):
 class UploadPage(BasePage):
 
     def open_upload(self):
+        click_via_script(self.driver, self.driver.find_element(*AdminPageLocators.DOWNLOADS))
         click_via_script(self.driver, self.driver.find_element(*BaseLocators.PLUS_ADD_BUTTON))
 
     def input_file_title(self, name):
         self.driver.find_element(*UploadPageLocators.UPLOAD_TITLE).send_keys(name)
+
+    def upload_file(self, filepath):
+        self.driver.find_element(By.ID, 'button-upload').click()
+        fileinput = self.driver.find_element_by_id("form-upload")
+        set_control_visible(self.driver, fileinput)
+        self.driver.find_element(*UploadPageLocators.REAL_INPUT).send_keys(get_absolute_path(filepath))
+        WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+        alert = self.driver.switch_to.alert
+        alert_text = alert.text
+        alert.accept()
+        if alert_text == "Your file was successfully uploaded!":
+            return True
+        else:
+            return False
 
     def save(self):
         click_via_script(self.driver, self.driver.find_element(*BaseLocators.SAVE_BUTTON))

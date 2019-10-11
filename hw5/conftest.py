@@ -46,7 +46,7 @@ def driver(request):
         options.accept_insecure_certs = True
         options.accept_untrusted_certs = True
         options.add_argument('--ignore-certificate-errors')
-        #options.add_argument('--start-maximized')
+        options.add_argument('--start-maximized')
 
         capabilities = DesiredCapabilities.CHROME.copy()
         capabilities['timeouts'] = {'implicit': int(request.config.getoption('--implicit_wait')) * 1000,
@@ -58,7 +58,7 @@ def driver(request):
         options.accept_insecure_certs = True
         options.accept_untrusted_certs = True
         options.add_argument('--headless')
-        #options.add_argument('start-maximized')
+        options.add_argument('start-maximized')
 
         capabilities = DesiredCapabilities.FIREFOX.copy()
         capabilities['timeouts'] = {'implicit': int(request.config.getoption('--implicit_wait')) * 1000,

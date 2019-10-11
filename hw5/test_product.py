@@ -83,7 +83,6 @@ def edit_product(request, create_product_to_edit, products_page, edit_product_pa
     def cleanup():
         print(" Cleanup")
         products_page.delete_product(new_product_name)
-        #        products_page.delete_product(product_name=f'"{new_product_name}"')
 
     request.addfinalizer(cleanup)
 
