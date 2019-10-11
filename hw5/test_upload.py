@@ -1,8 +1,23 @@
 """
 Test for file upload function
 """
+import os
+
 import pytest
+
 from .pages import LoginPage, UploadPage
+
+
+def find_file(file_name):
+    rootdir = os.getcwd()
+
+    for subdir, dirs, files in os.walk(rootdir):
+        for file in files:
+            # print os.path.join(subdir, file)
+            filepath = subdir + os.sep + file
+
+            if filepath.endswith(file_name):
+                return (filepath)
 
 
 @pytest.fixture
@@ -30,7 +45,7 @@ def test_file_upload(login_logout, driver):
     """
     Check if upload and save have no error
     """
-    file_path = './test_img.jpg'
+    file_path = find_file('test_img.jpg')
     upload_page = UploadPage(driver)
     upload_page.open_upload()
     upload_page.input_file_title('test img')

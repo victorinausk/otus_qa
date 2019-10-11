@@ -2,16 +2,17 @@
 
 import os
 
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementNotVisibleException, ElementNotInteractableException
 from selenium.common.exceptions import NoSuchElementException
-from .locators import LoginPageLocators, AdminPageLocators, ProductsPageLocators, UploadPageLocators
+from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from .locators import EditProductPageLocators, BaseLocators
+from .locators import LoginPageLocators, AdminPageLocators, ProductsPageLocators, UploadPageLocators
 
 
 def clear_input(element):
@@ -57,6 +58,7 @@ class LoginPage(BasePage):
         self.driver.find_element(*LoginPageLocators.LOGIN_INPUT).send_keys(login)
         self.driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(password)
         self.driver.find_element(*LoginPageLocators.LOGIN_BUTTON).click()
+        WebDriverWait(self.driver, 3)
 
     def clear_username_password(self):
         clear_input(self.driver.find_element(*LoginPageLocators.LOGIN_INPUT))
