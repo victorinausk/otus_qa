@@ -9,16 +9,18 @@ from .pages import LoginPage, UploadPage
 
 
 def find_file(file_name):
+    """ Find file in sub dirs """
 
     rootdir = os.getcwd()
 
-    for subdir, dirs, files in os.walk(rootdir):
+    for subdir, files in os.walk(rootdir):
         for file in files:
             filepath = subdir + os.sep + file
 
             if filepath.endswith(file_name):
                 return filepath
     return file_name
+
 
 @pytest.fixture
 def login_page(driver):
