@@ -23,6 +23,7 @@ class BaseLocators:
 class AdminPageLocators:
     CATALOG = (By.XPATH, '//a[contains(text(), "Catalog")]')
     PRODUCTS = (By.XPATH, '//*[@id="catalog"]/ul/li/a[contains(@href, "product")]')
+    DOWNLOADS = (By.XPATH, '//*[@id="menu"]/*[@id="catalog"]/ul/li/a[contains(@href, "download")]')
 
 
 class ProductsPageLocators:
@@ -50,5 +51,3 @@ class EditProductPageLocators:
 class UploadPageLocators:
     UPLOAD_TITLE = (By.CSS_SELECTOR, 'input[name="download_description[1][name]"]')
     REAL_INPUT = (By.CSS_SELECTOR, 'input[type="file"]')
-    UPLOAD_PATH = (By.CSS_SELECTOR, 'input[name="filename"]')
-    UPLOAD_MASK = (By.CSS_SELECTOR, 'input[name="mask"]')

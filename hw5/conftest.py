@@ -21,7 +21,6 @@ def module_fixture(request):
     """Запуск окружения"""
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
-
     compose.start()
     compose.wait_for("http://localhost/")
 
@@ -37,7 +36,7 @@ def module_fixture(request):
     request.addfinalizer(fin)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module', autouse=True)
 def driver(request):
     browser = request.config.getoption('--browser')
     if browser == 'chrome':
@@ -63,7 +62,7 @@ def driver(request):
 
         capabilities = DesiredCapabilities.FIREFOX.copy()
         capabilities['timeouts'] = {'implicit': int(request.config.getoption('--implicit_wait')) * 1000,
-                                    'pageLoad': 5000, 'script': 10000}
+                                    'pageLoad': 10000, 'script': 5000}
         wd = webdriver.Firefox(options=options, desired_capabilities=capabilities)
         wd.maximize_window()
     else:
@@ -75,4 +74,4 @@ def driver(request):
 def pytest_addoption(parser):
     parser.addoption('--browser', help='Set browser name.', default='chrome')
     parser.addoption('--opencart_url', default='http://localhost/', help='Set opencart URL.')
-    parser.addoption('--implicit_wait', default='0', help='Set the amount (in seconds) for implicit wait.')
+    parser.addoption('--implicit_wait', default='10', help='Set the amount (in seconds) for implicit wait.')

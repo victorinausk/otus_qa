@@ -24,4 +24,6 @@ script:
   - pytest -v -s ./hw3/test*.py
   - pytest -v -s ./hw4/test*.py
   - pytest -v -s ./hw5/test*.py
-  - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301,R0903,W0621 ./hw*/*.py
+  - pytest -v -s ./hw6/test*.py
+
+  - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301,R0903,W0621,W0612 ./hw*/*.py

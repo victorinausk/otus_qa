@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 """Базовая настройка сервисов"""
-import time
 import pytest
 import testcontainers.compose
 from selenium import webdriver
@@ -16,7 +15,6 @@ def module_fixture(request):
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
     compose.start()
     compose.wait_for("http://localhost/admin")
-    time.sleep(30)
 
     def fin():
         """Остановка окружения"""
