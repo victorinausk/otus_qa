@@ -1,12 +1,27 @@
 """ Open, read and edit .csv file and write output to .txt """
-
-
 # -*- coding: UTF-8 -*-
+
+import os.path
+
+
+def find_file(file_name):
+    """ Find file in sub dirs """
+
+    rootdir = os.getcwd()
+
+    for subdir, dirs, files in os.walk(rootdir):
+        for file in files:
+            filepath = subdir + os.sep + file
+
+            if filepath.endswith(file_name):
+                return filepath
+    return
+
 
 def gen_file():
     """Подготовка тестовых данных"""
 
-    with open('hw3/data.csv', mode='r+', encoding='windows-1251') as my_file:
+    with open(find_file('data.csv'), mode='r+', encoding='windows-1251') as my_file:
         f = my_file.read().splitlines()
         # убираем первую строку с информацией о данных таблицы
         f.pop(0)
@@ -39,6 +54,6 @@ def gen_file():
         final = ((name, city, credit_card, deposit, mortgage) for name in names for city in cities
                  for credit_card in credit_cards for deposit in deposits for mortgage in mortgages)
 
-        with open('hw3/result_data.txt', 'a') as f_txt:
+        with open(find_file('result_data.txt'), 'a') as f_txt:
             for i in final:
                 f_txt.write(' '.join(i) + '\n')
