@@ -4,4 +4,4 @@ requests
 testcontainers
 selenium
 psutil
-
+browsermobproxy
