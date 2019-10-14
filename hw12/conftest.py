@@ -20,8 +20,8 @@ def proxy():
         if proc.name() == "browsermob-proxy":
             proc.kill()
 
-    dict = {'port': 8090}
-    server = Server('./browsermob/browsermob-proxy', dict)
+    d = {'port': 8090}
+    server = Server('./browsermob/browsermob-proxy', d)
     server.start()
     proxy = server.create_proxy()
     proxy.new_har(title='project_har')

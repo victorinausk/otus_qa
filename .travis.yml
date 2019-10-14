@@ -18,6 +18,14 @@ before_script:
   - chmod +x geckodriver
   - sudo mv geckodriver "$install_dir"
   - echo "installed geckodriver binary in $install_dir"
+  - cd hw12
+  - rm -r ./browsermob
+  - mkdir ./browsermob
+  - cd ./browsermob
+  - curl -LJO https://github.com/lightbody/browsermob-proxy/releases/download/browsermob-proxy-2.1.4/browsermob-proxy-2.1.4-bin.zip
+  - unzip -j browsermob-proxy-2.1.4-bin.zip
+  - rm browsermob-proxy-2.1.4-bin.zip
+  - cd ../..
 
 script:
   - pytest -v -s ./hw1/test*.py
@@ -26,5 +34,7 @@ script:
   - pytest -v -s ./hw4/test*.py
   - pytest -v -s ./hw5/test*.py
   - pytest -v -s ./hw6/test*.py
+  - pytest -v -s ./hw12/test*.py
+
   - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301,R0903,W0621 ./hw*/*.py
 
