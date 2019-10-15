@@ -29,6 +29,7 @@ before_script:
   - cd browsermob-proxy-py
   - python setup.py install
   - cd ..
+  - apt-get install default-jdk
 
 script:
   - pytest -v -s ./hw1/test*.py
