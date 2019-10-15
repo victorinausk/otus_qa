@@ -35,7 +35,8 @@ def proxy():
         if proc.name() == "browsermob-proxy":
             proc.kill()
 
-    d = {'port': 8090}
+    d = {'port': 8080}
+    print(find_file('browsermob-proxy'))
     server = Server(find_file('browsermob-proxy'), d)
     server.start()
     time.sleep(5)
