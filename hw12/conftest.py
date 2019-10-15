@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import date, time
+from datetime import date
 
 import psutil
 import pytest
@@ -35,11 +35,10 @@ def proxy():
         if proc.name() == "browsermob-proxy":
             proc.kill()
 
-    d = {'port': 8080}
+    d = {'port': 8090}
     print(find_file('browsermob-proxy'))
     server = Server(find_file('browsermob-proxy'), d)
     server.start()
-    time.sleep(5)
     proxy = server.create_proxy()
     proxy.new_har(title='project_har')
     yield proxy
