@@ -6,6 +6,7 @@ addons:
   firefox: latest
 install:
   - pip install nose pylint
+  - pip install browsermob-proxy
   - pip install -r requirements.txt
 before_script:
   - LATEST_CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"`
@@ -25,10 +26,6 @@ before_script:
   - unzip -j browsermob-proxy-2.1.4-bin.zip
   - rm browsermob-proxy-2.1.4-bin.zip
   - cd ../..
-  - git clone git://github.com/AutomatedTester/browsermob-proxy-py.git
-  - cd browsermob-proxy-py
-  - python setup.py install
-  - cd ..
   - sudo apt-get install default-jdk
 
 script:
