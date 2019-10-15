@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import date
 
 import psutil
@@ -8,6 +9,19 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions, DesiredCapabilities
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver, AbstractEventListener
 
+
+def find_file(file_name):
+    """ Find file in sub dirs """
+
+    rootdir = os.getcwd()
+
+    for subdir, dirs, files in os.walk(rootdir):
+        for file in files:
+            filepath = subdir + os.sep + file
+
+            if filepath.endswith(file_name):
+                return filepath
+    return "Error"
 
 @pytest.fixture(scope='session', autouse=True)
 def proxy():
@@ -21,7 +35,7 @@ def proxy():
             proc.kill()
 
     d = {'port': 8090}
-    server = Server('./browsermob/browsermob-proxy', d)
+    server = Server(find_file('browsermob-proxy'), d)
     server.start()
     proxy = server.create_proxy()
     proxy.new_har(title='project_har')

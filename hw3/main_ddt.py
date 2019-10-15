@@ -15,7 +15,7 @@ def find_file(file_name):
 
             if filepath.endswith(file_name):
                 return filepath
-    return
+    return "Error"
 
 
 def gen_file():
