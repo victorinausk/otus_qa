@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import date
+from datetime import date, time
 
 import psutil
 import pytest
@@ -23,6 +23,7 @@ def find_file(file_name):
                 return filepath
     return "Error"
 
+
 @pytest.fixture(scope='session', autouse=True)
 def proxy():
     """
@@ -37,6 +38,7 @@ def proxy():
     d = {'port': 8090}
     server = Server(find_file('browsermob-proxy'), d)
     server.start()
+    time.sleep(5)
     proxy = server.create_proxy()
     proxy.new_har(title='project_har')
     yield proxy
