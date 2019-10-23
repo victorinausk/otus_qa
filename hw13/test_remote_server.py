@@ -18,8 +18,8 @@ def module_fixture(request):
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
     compose.start()
-    compose.wait_for("http://localhost:4444/wd/hub/status")
-    with urllib.request.urlopen("http://localhost:4444/wd/hub/status") as url:
+    compose.wait_for("http://selenium-hub:4444/wd/hub/status")
+    with urllib.request.urlopen("http://selenium-hub:4444/wd/hub/status") as url:
         data = json.loads(url.read().decode())
         if (data['status']) != '0':
             time.sleep(5)
