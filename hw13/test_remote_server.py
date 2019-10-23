@@ -17,7 +17,6 @@ def module_fixture(request):
     """Запуск окружения"""
     print("\nЗапуск docker-compose")
     compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
-    compose.fi
     compose.start()
     compose.wait_for("http://localhost:4444/wd/hub/status")
     with urllib.request.urlopen("http://localhost:4444/wd/hub/status") as url:
