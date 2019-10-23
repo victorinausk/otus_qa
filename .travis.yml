@@ -36,10 +36,12 @@ script:
   - pytest -v -s ./hw1/test*.py
   - pytest -v -s ./hw2/test*.py
   - pytest -v -s ./hw3/test*.py
+  - cp ./hw4/docker-compose.yml .
   - pytest -v -s ./hw4/test*.py
   - pytest -v -s ./hw5/test*.py
   - pytest -v -s ./hw6/test*.py
   - pytest -v -s ./hw12/test*.py
+  - cp ./hw13/docker-compose.yml .
   - pytest -v -s ./hw13/test*.py
 
 
