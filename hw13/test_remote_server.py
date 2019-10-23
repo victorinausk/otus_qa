@@ -50,7 +50,7 @@ def test_grid(browser):
     """Тестирование грида в докере"""
 
     browser.get("http://www.google.com")
-    if "Google" not in browser.title:
+    if 'Google' not in browser.title:
         raise Exception("Unable to load google page!")
     elem = browser.find_element_by_name("q")
     elem.click()
@@ -73,7 +73,7 @@ def test_browserstack():
         desired_capabilities=desired_cap)
 
     driver.get("http://www.google.com")
-    if not "Google" in driver.title:
+    if 'Google' not in driver.title:
         raise Exception("Unable to load google page!")
     elem = driver.find_element_by_name("q")
     elem.send_keys("BrowserStack")
