@@ -5,9 +5,9 @@ addons:
   chrome: stable
   firefox: latest
   browserstack:
-    username: "victorinausk"
+    username: "victoriauskova1"
     access_key:
-      secure: "The secure string output of `travis encrypt`"
+      secure: "GxkfyzdSQUnTpp3pcDUM"
 install:
   - pip install nose pylint
   - pip install browsermob-proxy
