@@ -1,4 +1,4 @@
-pytest
+pytest>=5.0
 py
 requests
 testcontainers
