@@ -1,0 +1,74 @@
+{
+  "name": "This test contains steps.",
+  "status": "skipped",
+  "statusDetails": {
+    "message": "AssertionError: assert False",
+    "trace": "@allure.title(\"This test contains steps.\")\n    @pytest.mark.xfail(reason='Так задумано')\n    def test_with_steps():\n        make_step1('Параметр 1', 'Параметр 2')\n        make_step2()\n>       make_step3()\n\ntest_allure.py:29: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    @allure.step('Финальная проверка')\n    def make_step3():\n        print('Завал')\n>       assert False\nE       assert False\n\ntest_allure.py:46: AssertionError"
+  },
+  "steps": [
+    {
+      "name": "Параметр 1: \"'Параметр 1'\", Параметр 2: \"'Параметр 2'\"",
+      "status": "passed",
+      "parameters": [
+        {
+          "name": "param1",
+          "value": "'Параметр 1'"
+        },
+        {
+          "name": "param2",
+          "value": "'Параметр 2'"
+        }
+      ],
+      "start": 1572434056479,
+      "stop": 1572434056479
+    },
+    {
+      "name": "промежуточный шаг",
+      "status": "passed",
+      "start": 1572434056479,
+      "stop": 1572434056479
+    },
+    {
+      "name": "Финальная проверка",
+      "status": "failed",
+      "statusDetails": {
+        "message": "AssertionError: assert False\n",
+        "trace": "  File \"/home/victory/python/virtual/py37/lib/python3.7/site-packages/allure_commons/_allure.py\", line 157, in impl\n    return func(*a, **kw)\n  File \"/home/victory/PycharmProjects/otus_qa/hw15/test_allure.py\", line 46, in make_step3\n    assert False\n"
+      },
+      "start": 1572434056479,
+      "stop": 1572434056479
+    }
+  ],
+  "start": 1572434056479,
+  "stop": 1572434056480,
+  "uuid": "9ad55c4c-9c75-42fb-ab90-39ea7242f759",
+  "historyId": "943786a5b50065eee834e2d335fe8ef8",
+  "testCaseId": "9809a6b7dcb7a0c2505397a7c38c7b3f",
+  "fullName": "test_allure#test_with_steps",
+  "labels": [
+    {
+      "name": "suite",
+      "value": "test_allure"
+    },
+    {
+      "name": "host",
+      "value": "edg-xps"
+    },
+    {
+      "name": "thread",
+      "value": "14037-MainThread"
+    },
+    {
+      "name": "framework",
+      "value": "pytest"
+    },
+    {
+      "name": "language",
+      "value": "cpython3"
+    },
+    {
+      "name": "package",
+      "value": "test_allure"
+    }
+  ]
+}

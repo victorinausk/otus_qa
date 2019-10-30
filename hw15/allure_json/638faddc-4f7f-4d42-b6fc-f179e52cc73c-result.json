@@ -1,0 +1,36 @@
+{
+  "name": "This test will be passed",
+  "status": "passed",
+  "start": 1572434056460,
+  "stop": 1572434056460,
+  "uuid": "17c42419-6389-4917-87d2-1b1f904e5afd",
+  "historyId": "89d9432335a31f3ce0ecb09233ac67d8",
+  "testCaseId": "f0dc6493335db9bb0af9fd4600182107",
+  "fullName": "test_allure#test_pass",
+  "labels": [
+    {
+      "name": "suite",
+      "value": "test_allure"
+    },
+    {
+      "name": "host",
+      "value": "edg-xps"
+    },
+    {
+      "name": "thread",
+      "value": "14037-MainThread"
+    },
+    {
+      "name": "framework",
+      "value": "pytest"
+    },
+    {
+      "name": "language",
+      "value": "cpython3"
+    },
+    {
+      "name": "package",
+      "value": "test_allure"
+    }
+  ]
+}

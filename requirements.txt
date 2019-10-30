@@ -6,5 +6,3 @@ selenium
 psutil
 pytest-html
 allure-pytest
-
-
