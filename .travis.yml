@@ -44,6 +44,7 @@ script:
   - cp ./hw13/docker-compose.yml .
   - pytest -v -s ./hw13/test*.py
   - pytest -v -s ./hw14/test*.py
+  - pytest -vs ./hw15/test*.py --alluredir ./hw15/allure_json
 
 
   - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301,R0903,W0621,W0612,W0212 ./hw*/*.py
