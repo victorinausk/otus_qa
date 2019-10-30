@@ -4,3 +4,5 @@ requests
 testcontainers
 selenium
 psutil
+allure-pytest
+
