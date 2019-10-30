@@ -1,7 +1,6 @@
-pytest
+pytest==5.2.2
 py
 requests
 testcontainers
 selenium
 psutil
-
