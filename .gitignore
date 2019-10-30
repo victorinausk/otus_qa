@@ -111,3 +111,7 @@ myenv
 myvenv
 python3.6-venv
 v-env
+
+#bin files
+/hw12/browsermob/*
+browsermob/*

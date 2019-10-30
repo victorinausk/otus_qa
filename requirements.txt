@@ -3,3 +3,5 @@ py
 requests
 testcontainers
 selenium
+psutil
+
