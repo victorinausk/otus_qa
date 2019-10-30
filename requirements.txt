@@ -1,9 +1,6 @@
-pytest>=5.0
+pytest==5.2.2
 py
 requests
 testcontainers
 selenium
 psutil
-pytest-metadata
-pytest-html
-
