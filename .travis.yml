@@ -4,6 +4,10 @@ python: "3.6"
 addons:
   chrome: stable
   firefox: latest
+  browserstack:
+    username: "victoriauskova1"
+    access_key:
+      secure: "GxkfyzdSQUnTpp3pcDUM"
 install:
   - pip install nose pylint
   - pip install browsermob-proxy
@@ -32,10 +36,15 @@ script:
   - pytest -v -s ./hw1/test*.py
   - pytest -v -s ./hw2/test*.py
   - pytest -v -s ./hw3/test*.py
+  - cp ./hw4/docker-compose.yml .
   - pytest -v -s ./hw4/test*.py
   - pytest -v -s ./hw5/test*.py
   - pytest -v -s ./hw6/test*.py
   - pytest -v -s ./hw12/test*.py
+  - cp ./hw13/docker-compose.yml .
+  - pytest -v -s ./hw13/test*.py
+
+
 
   - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301,R0903,W0621,W0612 ./hw*/*.py
 
