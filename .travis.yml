@@ -46,8 +46,7 @@ script:
   - pytest -vs ./hw14/test*.py
   - pytest -vs ./hw15/test*.py --alluredir ./hw15/allure_json
   - cat ./hw15/allure_json/*.json
-  - pytest -vs ./hw16/test*.py
-  - cat ./hw16/data.json
+  - pytest -sv --folder=./hw16/ --file_name=access.log --file_number=one ./hw16/test*.py
 
   - echo "Code Quality"
 
