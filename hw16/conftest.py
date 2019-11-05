@@ -25,12 +25,12 @@ def apache2_logrow(s):
     for s in s.replace('\r', '').replace('\n', '').split(' '):
         if qp:
             qp.append(s)
-        elif '' == s:
+        elif s == '':
             row.append('')
-        elif '"' == s[0]:
+        elif s[0] == '"':
             qp = [s]
             qe = '"'
-        elif '[' == s[0]:
+        elif s[0] == '[':
             qp = [s]
             qe = ']'
         else:
@@ -205,7 +205,7 @@ def save_to_json(request_count, request, get_files):
     print(path)
     request_statistic_list, ip_list, long_time_request_list, server_error_list, client_error_list = request_count
     all_statistic_list = {}
-    all_statistic_list["Requests statistic"] = request_statistic_list, server_error_list,
+    all_statistic_list["Requests statistic"] = request_statistic_list, server_error_list
     all_statistic_list["Top 10 IP"] = ip_list
     all_statistic_list["Top 10 long requests"] = long_time_request_list
     all_statistic_list["Server error"] = server_error_list
