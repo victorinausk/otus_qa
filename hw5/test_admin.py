@@ -2,6 +2,7 @@
 # pylint: disable=redefined-outer-name, unused-argument
 
 import pytest
+
 from .locators import LoginPageLocators, BaseLocators
 from .pages import LoginPage
 
