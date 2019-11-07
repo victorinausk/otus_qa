@@ -1,12 +1,10 @@
 """
 Basic test for logging
 """
-import logging
-# pylint: disable=redefined-outer-name, unused-argument
-import os
-from datetime import date
 
-import pytest
+import os
+
+from sqlalchemy import create_engine
 
 
 def find_file(file_name):
@@ -23,20 +21,7 @@ def find_file(file_name):
     return False
 
 
-@pytest.fixture
-def function_logger(logger, driver):
-    return logging.getLogger(name=f'session_logger.{__name__}.{driver.name}')
-
-
-@pytest.fixture
-def logs_setup_teardown(logger):
-    logger.debug('---- Beginning of test. ----')
-    yield
-    logger.debug('---- End of test. ----')
-
-
-def test_logging(driver, function_logger, logs_setup_teardown, proxy):
+def test_logging(driver):
     driver.get('https://ya.ru')
-    function_logger.info('Yandex')
-    function_logger.debug(proxy.har)
-    assert find_file(f'logs_{date.today()}.log')
+    engine = create_engine('sqlite:///./log.db', echo=True)
+    assert engine.execute("select count(*) from log").fetchall()[0] != 0

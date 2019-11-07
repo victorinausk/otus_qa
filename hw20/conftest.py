@@ -1,14 +1,18 @@
+"""Module with fixtures for log tests"""
+import datetime
 import logging
 import os
-from datetime import date, datetime
+import urllib.parse
 
-import psutil
-import pymysql
 import pytest
+import testcontainers.compose
 from browsermobproxy import Server
 from selenium import webdriver
-from selenium.webdriver import ChromeOptions, DesiredCapabilities
-from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver, AbstractEventListener
+from selenium.webdriver.chrome.options import Options as Chrome_options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.firefox.options import Options as Firefox_options
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+from sqlalchemy import create_engine
 
 
 def find_file(file_name):
@@ -22,22 +26,62 @@ def find_file(file_name):
 
             if filepath.endswith(file_name):
                 return filepath
-    return "Error"
+    raise Exception("Files not found " + file_name)
 
 
-class BaseListener(AbstractEventListener):
+COMPOSE_PATH = "./"
+
+
+@pytest.fixture(scope='module', autouse=True)
+def open_login_page(driver, request):
+    url = 'admin/'
+    login_page_url = ''.join((request.config.getoption('--opencart_url'), url))
+    return driver.get(login_page_url)
+
+
+@pytest.fixture(scope="module", autouse=True)
+def module_fixture(request):
+    """Запуск окружения"""
+    print("\nЗапуск docker-compose")
+    compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
+    compose.start()
+    compose.wait_for("http://localhost/")
+
+    def fin():
+        """Остановка окружения"""
+        print("\nОстановка docker-compose")
+        compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
+        compose.stop()
+        print("\n")
+        print("\n================================== HW 20 ============================================================")
+        print("\n")
+
+    request.addfinalizer(fin)
+
+
+def log():
+    """Function for logging"""
+    log_timestamp = str(datetime.datetime.now())[0:-4].replace('-', '.').replace(' ', '_').replace(':', '.')
+    logger = logging.getLogger("WebTestApp")
+    logger.setLevel(logging.INFO)
+    fh = logging.FileHandler(log_timestamp + "_logging.log")
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+    logger.info("-----------------------------")
+    logger.info("Program started")
+
+
+class MyListener(AbstractEventListener):
     """event_firing_webdriver listener"""
+    __engine = create_engine('sqlite:///./log.db', echo=True)
 
     def __init__(self):
-        self.log_timestamp = str(datetime.datetime.now())[0:-4].replace('-', '.').replace(' ', '_').replace(':', '.')
+        self.log_timestamp = str(datetime.today().strftime("%Y%m%d"))
         self.log_filename = self.log_timestamp + '_file.log'
         self.logfile = open(self.log_filename, 'w')
-        self.logdb_filename = (self.log_timestamp + '_log.myd')
-        self.logdb = pymysql.connect(self.logdb_filename)
-        self.cursor = self.logdb.cursor()
-        self.cursor.execute("CREATE TABLE log (timestamp a_string, message a_string)")
-        self.logdb.commit()
-        self.logdb.close()
+        self.__engine.execute("CREATE TABLE IF NOT EXISTS log (timestamp a_string, message a_string)")
+        log()
         self.logger = logging.getLogger("WebTestApp")
 
     def _write_log_(self, entry):
@@ -46,12 +90,8 @@ class BaseListener(AbstractEventListener):
 
     def _write_log_db_(self, entry):
         """Function for write information in logdb"""
-        self.logdb = pymysql.connect(self.logdb_filename)
-        self.cursor = self.logdb.cursor()
-        timestamp = str(datetime.now())[0:-4].replace('-', '.').replace(' ', '_').replace(':', '.')
-        self.cursor.execute("INSERT INTO log VALUES ('{}', '{}')".format(timestamp, entry))
-        self.logdb.commit()
-        self.logdb.close()
+        timestamp = str(datetime.today().strftime("%Y%m%d"))
+        self.__engine.execute("INSERT INTO log VALUES ('{}', '{}')".format(timestamp, entry))
 
     def before_navigate_to(self, url, driver):
         print("Before navigate to {}".format(url))
@@ -128,7 +168,7 @@ class BaseListener(AbstractEventListener):
         self.logger.info("After quit")
 
     def on_exception(self, exception, driver):
-        screenshot_timestamp = str(datetime.now())[0:-4].replace('-', '.').replace(' ', '_').replace(':', '.')
+        screenshot_timestamp = str(datetime.today().strftime("%Y%m%d"))
         screenshot_filename = screenshot_timestamp + 'exception_screenshot.png'
         print("On exception {}".format(exception))
         self._write_log_("On exception {}".format(exception))
@@ -136,85 +176,121 @@ class BaseListener(AbstractEventListener):
         driver.save_screenshot('screenshots/' + screenshot_filename)
 
 
-@pytest.fixture(scope='session', autouse=True)
-def proxy():
-    """
-    Setup and down for proxy.
-    :return: browsermob proxy client
-    """
-    for proc in psutil.process_iter():
-        # check whether the process name matches
-        if proc.name() == "browsermob-proxy":
-            proc.kill()
+def pytest_addoption(parser):
+    """Addoption fixture: browser type, url, headless option"""
+    parser.addoption(
+        "--browser", action="store", default="chrome", help="browser option"
+    )
+    parser.addoption(
+        "--opencart_url", action="store", default="http://localhost/", help="url option"
+    )
+    parser.addoption(
+        "--window_option", action="store", default="headless", help="window option"
+    )
+    parser.addoption(
+        "--waits", action="store", default="no_wait", help="wait option"
+    )
+    parser.addoption(
+        "--wait_time", action="store", default=10, help="wait time option"
+    )
 
-    d = {'port': 8090}
-    print(find_file('browsermob-proxy'))
-    server = Server(find_file('browsermob-proxy'), d)
+
+@pytest.fixture(scope='module', autouse=True)
+def cmdopt_browser(request):
+    """browser type option"""
+    return request.config.getoption("--browser")
+
+
+@pytest.fixture(scope='module', autouse=True)
+def cmdopt_url(request):
+    """url options"""
+    return request.config.getoption("--opencart_url")
+
+
+@pytest.fixture(scope='module', autouse=True)
+def cmdopt_window(request):
+    """window option"""
+    return request.config.getoption("--window_option")
+
+
+@pytest.fixture
+def cmdopt_waits(request):
+    """wait option"""
+    return request.config.getoption("--waits")
+
+
+@pytest.fixture
+def cmdopt_wait_time(request):
+    """wait time option"""
+    return request.config.getoption("--wait_time")
+
+
+@pytest.fixture(scope='module', autouse=True)
+def driver(request, cmdopt_browser, cmdopt_window):
+    """Fixture to create, return and close driver"""
+    server = Server(find_file('browsermob-proxy'), {"port": 9090})
     server.start()
     proxy = server.create_proxy()
-    proxy.new_har(title='project_har')
-    yield proxy
-    server.stop()
+    url = urllib.parse.urlparse(proxy.proxy).path
+    driver = None
+    if cmdopt_browser == "ie":
+        driver = webdriver.Ie()
+    elif cmdopt_browser == "firefox":
+        if cmdopt_window == "headless":
+            options = Firefox_options()
+            options.add_argument("--headless")
+            options.add_argument('--proxy-server={}'.format(url))
+            driver = webdriver.Firefox(firefox_options=options)
+        else:
+            options = Firefox_options()
+            options.add_argument('--proxy-server={}'.format(url))
+            driver = webdriver.Firefox()
+        proxy.new_har()
+        request.addfinalizer(driver.quit)
+    elif cmdopt_browser == "chrome":
+        if cmdopt_window == "headless":
+            options = Chrome_options()
+            options.headless = True
+            options.add_argument('--proxy-server={}'.format(url))
+            driver = webdriver.Chrome(options=options)
+            proxy.new_har()
+            request.addfinalizer(driver.quit)
+        else:
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--proxy-server={}'.format(url))
+            d = DesiredCapabilities.CHROME
+            d['loggingPrefs'] = {'browser': 'ALL'}
+            driver = webdriver.Chrome(desired_capabilities=d, options=chrome_options)
+            proxy.new_har()
+            ef_driver = EventFiringWebDriver(driver, MyListener())
 
+            def fin():
+                log_timestamp = str(datetime.today().strftime("%Y%m%d"))
+                browserlog_filename = log_timestamp + '_browser_log_file.log'
+                browserlogfile = open(browserlog_filename, 'w')
+                print('-------------------------')
+                for i in ef_driver.get_log('browser'):
+                    print(i)
+                    browserlogfile.write(str(i) + '\n')
 
-@pytest.fixture(scope='session', autouse=True)
-def driver(request, logger, proxy):
-    browser = request.config.getoption('--browser')
+                print(proxy.har)
+                server.stop()
+                ef_driver.quit
 
-    if browser == 'chrome':
-        options = ChromeOptions()
-        options.add_argument('--headless')
-        options.add_argument('--start-fullscreen')
-        options.add_argument(f'--proxy-server={proxy.proxy}')
-        options.add_experimental_option('w3c', False)
-        caps = DesiredCapabilities.CHROME.copy()
-        caps['timeouts'] = {'implicit': 20000, 'pageLoad': 20000, 'script': 20000}
-        caps['loggingPrefs'] = {'browser': 'ALL'}
-        wd = EventFiringWebDriver(webdriver.Chrome(options=options, desired_capabilities=caps),
-                                  ChromeListener(logger))
+            request.addfinalizer(fin)
+            return ef_driver
     else:
-        raise ValueError('Unsupported browser.')
+        return "unsupported browser"
 
-    yield wd
-
-    wd.quit()
+    return driver
 
 
-def pytest_addoption(parser):
-    parser.addoption('--browser', help='Supported browsers: chrome', default='chrome')
-
-
-@pytest.fixture(scope='session', autouse=True)
-def logger():
-    logger = MyLogger(name='session_logger').launch_logger()
-    yield logger
-    logging.shutdown()
-
-
-class ChromeListener(BaseListener):
-
-    def after_navigate_to(self, url, driver):
-        self.logger.info(f'\nWebDriver log - Opened {url}')
-        for s in driver.get_log('browser'):
-            self.logger.debug(s)
-
-
-class MyLogger:
-
-    def __init__(self, name):
-        self.name = name
-
-    def launch_logger(self):
-        logger = logging.getLogger(self.name)
-        logger.setLevel(logging.DEBUG)
-        file_log = logging.FileHandler(f'logs_{date.today()}.log')
-        file_log.setLevel(logging.DEBUG)
-        file_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        file_log.setFormatter(file_format)
-        logger.addHandler(file_log)
-        console_log = logging.StreamHandler()
-        console_log.setLevel(logging.DEBUG)
-        console_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        console_log.setFormatter(console_format)
-        logger.addHandler(console_log)
-        return logger
+@pytest.fixture
+def add_waits(get_driver, cmdopt_wait_time):
+    """fixture for add waits"""
+    driver = get_driver
+    if cmdopt_waits == "waits":
+        driver.implicitly_wait(cmdopt_wait_time)
+    else:
+        pass
+    return driver
