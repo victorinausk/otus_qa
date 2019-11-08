@@ -61,7 +61,7 @@ def module_fixture(request):
 
 def log():
     """Function for logging"""
-    log_timestamp = str(datetime.datetime.now())[0:-4].replace('-', '.').replace(' ', '_').replace(':', '.')
+    log_timestamp = str(datetime.today().strftime("%Y%m%d"))
     logger = logging.getLogger("WebTestApp")
     logger.setLevel(logging.INFO)
     fh = logging.FileHandler(log_timestamp + "_logging.log")
@@ -74,12 +74,12 @@ def log():
 
 class MyListener(AbstractEventListener):
     """event_firing_webdriver listener"""
-    __engine = create_engine('sqlite:///./log.db', echo=True)
+    __engine = create_engine('sqlite:///' + find_file('log.db'), echo=True)
 
     def __init__(self):
         self.log_timestamp = str(datetime.today().strftime("%Y%m%d"))
         self.log_filename = self.log_timestamp + '_file.log'
-        self.logfile = open(self.log_filename, 'w')
+        self.logfile = open(find_file('log.db').replace('log.db', '') + self.log_filename, 'w')
         self.__engine.execute("CREATE TABLE IF NOT EXISTS log (timestamp a_string, message a_string)")
         log()
         self.logger = logging.getLogger("WebTestApp")
@@ -90,7 +90,7 @@ class MyListener(AbstractEventListener):
 
     def _write_log_db_(self, entry):
         """Function for write information in logdb"""
-        timestamp = str(datetime.today().strftime("%Y%m%d"))
+        timestamp = str(datetime.datetime.now())[0:-4].replace('-', '.').replace(' ', '_').replace(':', '.')
         self.__engine.execute("INSERT INTO log VALUES ('{}', '{}')".format(timestamp, entry))
 
     def before_navigate_to(self, url, driver):
@@ -267,7 +267,7 @@ def driver(request, cmdopt_browser, cmdopt_window):
             def fin():
                 log_timestamp = str(datetime.today().strftime("%Y%m%d"))
                 browserlog_filename = log_timestamp + '_browser_log_file.log'
-                browserlogfile = open(browserlog_filename, 'w')
+                browserlogfile = open(find_file('log.db').replace('log.db', '') + browserlog_filename, 'w')
                 print('-------------------------')
                 for i in ef_driver.get_log('browser'):
                     print(i)

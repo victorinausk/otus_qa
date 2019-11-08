@@ -17,11 +17,12 @@ def find_file(file_name):
             filepath = subdir + os.sep + file
 
             if filepath.endswith(file_name):
-                return True
-    return False
+                return filepath
+    raise Exception("Files not found " + file_name)
 
 
 def test_logging(driver):
     driver.get('https://ya.ru')
-    engine = create_engine('sqlite:///./log.db', echo=True)
-    assert engine.execute("select count(*) from log").fetchall()[0] != 0
+    print('sqlite:///' + find_file('log.db'))
+    engine = create_engine('sqlite:///' + find_file('log.db'), echo=True)
+    assert int(engine.execute("select count(*) from log").fetchall()[0][0]) != 0
