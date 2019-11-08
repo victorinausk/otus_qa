@@ -64,7 +64,7 @@ def log():
     log_timestamp = str(datetime.today().strftime("%Y%m%d"))
     logger = logging.getLogger("WebTestApp")
     logger.setLevel(logging.INFO)
-    fh = logging.FileHandler(log_timestamp + "_logging.log")
+    fh = logging.FileHandler(find_file('log.db').replace('log.db', '') + log_timestamp + "_logging.log")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
@@ -173,7 +173,7 @@ class MyListener(AbstractEventListener):
         print("On exception {}".format(exception))
         self._write_log_("On exception {}".format(exception))
         self._write_log_db_("On exception {}".format(exception))
-        driver.save_screenshot('screenshots/' + screenshot_filename)
+        driver.save_screenshot(find_file('log.db').replace('log.db', '') + screenshot_filename)
 
 
 def pytest_addoption(parser):
