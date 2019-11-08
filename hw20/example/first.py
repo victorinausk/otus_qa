@@ -1,6 +1,6 @@
 import logging
 
-from hw20.utils.sqllitelogger import MySQLiteHandler
+from hw20.example.sqllitelogger import MySQLiteHandler
 
 
 def main():
