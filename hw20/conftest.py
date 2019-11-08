@@ -53,8 +53,6 @@ def module_fixture(request):
         compose = testcontainers.compose.DockerCompose(COMPOSE_PATH)
         compose.stop()
         print("\n")
-        print("\n================================== HW 20 ============================================================")
-        print("\n")
 
     request.addfinalizer(fin)
 

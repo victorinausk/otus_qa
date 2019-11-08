@@ -12,7 +12,5 @@ def module_fixture(request):
     def fin():
         """Расскраска трависа"""
         print("\n")
-        print("\n================================== HW 4 ============================================================")
-        print("\n")
 
     request.addfinalizer(fin)
