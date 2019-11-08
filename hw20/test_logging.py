@@ -47,7 +47,7 @@ def get_select_sql():
 def generate_customer():
     # engine = create_engine('mysql://root:my-secret-pw@localhost/opencart', echo=True) не работает с Python3
     try:
-        conn = pymysql.connect(host='localhost', user='root', password='my-secret-pw', db='opencart', charset='utf8')
+        conn = pymysql.connect(host='127.0.0.1', user='root', password='my-secret-pw', db='opencart', charset='utf8')
     except Exception:
         print("Error in MySQL connexion")
     else:
