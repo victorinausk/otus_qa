@@ -84,22 +84,15 @@ def opt_file_number(request):
     return request.config.getoption("--file_number")
 
 
-def sort_size(e):
-    return e['size']
-
-
 @pytest.fixture
 def request_count(get_files):
     """Fixture to count statistics"""
-    get_count = 0
-    post_count = 0
     server_error_count = 0
     client_error_count = 0
     ip = []
     all_request_count = {}
     get_request_count = {}
     post_request_count = {}
-    long_request_list = []
     long_time_request_list = []
     server_error_list = []
     client_error_list = []
