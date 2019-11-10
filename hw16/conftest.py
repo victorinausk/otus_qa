@@ -87,8 +87,6 @@ def opt_file_number(request):
 @pytest.fixture
 def request_count(get_files):
     """Fixture to count statistics"""
-    server_error_count = 0
-    client_error_count = 0
     ip = []
     all_request_count = {}
     get_request_count = {}
@@ -133,7 +131,6 @@ def request_count(get_files):
         long_time_request_list.append(k)
 
     for i in list(filter(lambda k: k['status'].startswith('5'), log_data)):
-        server_error_count = server_error_count + 1
         k = {}
         k["IP"] = i['host']
         k["Status_code"] = i['status']
@@ -142,7 +139,6 @@ def request_count(get_files):
         server_error_list.append(k)
 
     for i in list(filter(lambda k: k['status'].startswith('4'), log_data)):
-        client_error_count = client_error_count + 1
         k = {}
         k["IP"] = i['host']
         k["Status_code"] = i['status']
@@ -162,7 +158,9 @@ def request_count(get_files):
     request_statistic_list.append(post_request_count)
     request_statistic_list.append(all_request_count)
 
+    ip = list(map(lambda k: k['host'], log_data))
     ip_list = []
+
     c = {}
     for key, value in Counter(ip).most_common(10):
         c["IP"] = key
