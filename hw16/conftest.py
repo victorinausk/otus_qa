@@ -1,6 +1,7 @@
 """Module with fixtures for tests"""
 import json
 import os
+import re
 from collections import Counter
 
 import pytest
@@ -15,30 +16,6 @@ def module_fixture(request):
         print("\n")
 
     request.addfinalizer(fin)
-
-
-def apache2_logrow(s):
-    row = []
-    qe = qp = None
-    for s in s.replace('\r', '').replace('\n', '').split(' '):
-        if qp:
-            qp.append(s)
-        elif s == '':
-            row.append('')
-        elif s[0] == '"':
-            qp = [s]
-            qe = '"'
-        elif s[0] == '[':
-            qp = [s]
-            qe = ']'
-        else:
-            row.append(s)
-        l = len(s)
-        if l and qe == s[-1]:
-            if l == 1 or s[-2] != '\\':
-                row.append(' '.join(qp)[1:-1].replace('\\' + qe, qe))
-                qp = qe = None
-    return row
 
 
 def pytest_addoption(parser):
@@ -107,6 +84,10 @@ def opt_file_number(request):
     return request.config.getoption("--file_number")
 
 
+def sort_size(e):
+    return e['size']
+
+
 @pytest.fixture
 def request_count(get_files):
     """Fixture to count statistics"""
@@ -122,64 +103,66 @@ def request_count(get_files):
     long_time_request_list = []
     server_error_list = []
     client_error_list = []
+    # Regex for the common Apache log format.
+    parts = [
+
+        r'(?P<host>\S+)',  # host %h
+        r'\S+',  # indent %l (unused)
+        r'(?P<user>\S+)',  # user %u
+        r'\[(?P<time>.+)\]',  # time %t
+        r'"(?P<method>[A-Z]+)',  # method
+        r'(?P<request>[^',  # request
+        r'"]+)?',  # unused
+        r'(?P<protocol>HTTP/[0-9.]+")',
+        r'(?P<status>[0-9]+)',  # status %>s
+        r'(?P<size>\S+)',  # size %b (careful, can be '-')
+        r'"(?P<referrer>.*)"',  # referrer "%{Referer}i"
+        r'"(?P<agent>.*)"',  # user agent "%{User-agent}i"
+    ]
+    pattern = re.compile(r'\s+'.join(parts) + r'\s*\Z')
+
+    # Initiazlie required variables
+    log_data = []
+
+    # Get components from each line of the log file into a structured dict
     for i in get_files:
         with open(i, 'r') as logfile:
             for line in logfile.readlines():
-                ip.append(apache2_logrow(line)[0])
-                if str(apache2_logrow(line)[4]).__contains__("GET"):
-                    get_count = get_count + 1
-                if str(apache2_logrow(line)[4]).__contains__("POST"):
-                    post_count = post_count + 1
-                if len(long_request_list) < 10:
-                    long_request_list.append(line)
+                log_data.append(pattern.match(line).groupdict())
 
-                if len(long_request_list) == 10:
-                    b = long_request_list[0]
-                    k = 0
-                    for j in range(len(long_request_list)):
-                        if int(apache2_logrow(long_request_list[j])[6]) < int(apache2_logrow(b)[6]):
-                            b = long_request_list[j]
-                            k = j
-                    long_request_list[k] = line
-                if str(apache2_logrow(line)[5]).startswith('5'):
-                    server_error_count = server_error_count + 1
-                    k = {}
-                    k["IP"] = apache2_logrow(line)[0]
-                    k["Status_code"] = apache2_logrow(line)[5]
-                    k["Method"] = apache2_logrow(line)[4][0:3]
-                    k["Url"] = apache2_logrow(line)[4][4:apache2_logrow(line)[4].rindex(' ')]
-                    server_error_list.append(k)
-                if str(apache2_logrow(line)[5]).startswith('4'):
-                    client_error_count = client_error_count + 1
-                    k = {}
-                    k["IP"] = apache2_logrow(line)[0]
-                    k["Status_code"] = apache2_logrow(line)[5]
-                    k["Method"] = apache2_logrow(line)[4][0:3]
-                    k["Url"] = apache2_logrow(line)[4][4:apache2_logrow(line)[4].rindex(' ')]
-                    client_error_list.append(k)
+    for i in sorted(log_data, key=lambda k: k['size'], reverse=True)[0:10]:
+        k = {}
+        k["Date_Time"] = i['time']
+        k["IP"] = i['host']
+        k["Status_code"] = i['status']
+        k["Method"] = i['method']
+        k["Url"] = i['request']
+        long_time_request_list.append(k)
+
+    for i in list(filter(lambda k: k['status'].startswith('5'), log_data)):
+        server_error_count = server_error_count + 1
+        k = {}
+        k["IP"] = i['host']
+        k["Status_code"] = i['status']
+        k["Method"] = i['method']
+        k["Url"] = i['request']
+        server_error_list.append(k)
+
+    for i in list(filter(lambda k: k['status'].startswith('4'), log_data)):
+        client_error_count = client_error_count + 1
+        k = {}
+        k["IP"] = i['host']
+        k["Status_code"] = i['status']
+        k["Method"] = i['method']
+        k["Url"] = i['request']
+        client_error_list.append(k)
 
     get_request_count["Request_type"] = "GET REQUESTS"
-    get_request_count["Request_count"] = get_count
+    get_request_count["Request_count"] = len(list(filter(lambda k: k['method'] == 'GET', log_data)))
     post_request_count["Request_type"] = "POST REQUESTS"
-    post_request_count["Request_count"] = post_count
+    post_request_count["Request_count"] = len(list(filter(lambda k: k['method'] == 'POST', log_data)))
     all_request_count["Request_type"] = "ALL REQUESTS"
-    all_request_count["Request_count"] = get_count + post_count
-
-    for i in range(len(long_request_list)):
-        max_index = i
-        for j in range(i + 1, len(long_request_list)):
-            if int(apache2_logrow(long_request_list[j])[6]) > int(apache2_logrow(long_request_list[max_index])[6]):
-                max_index = j
-        long_request_list[i], long_request_list[max_index] = long_request_list[max_index], long_request_list[i]
-
-    for _ in long_request_list:
-        k = {}
-        k["Date_Time"] = apache2_logrow(_)[3]
-        k["IP"] = apache2_logrow(line)[0]
-        k["Status_code"] = apache2_logrow(line)[5]
-        k["Method"] = apache2_logrow(line)[4][0:3]
-        k["Url"] = apache2_logrow(line)[4][4:apache2_logrow(line)[4].rindex(' ')]
-        long_time_request_list.append(k)
+    all_request_count["Request_count"] = len(log_data)
 
     request_statistic_list = []
     request_statistic_list.append(get_request_count)
