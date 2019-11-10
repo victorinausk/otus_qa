@@ -33,18 +33,23 @@ before_script:
   - sudo apt-get install default-jdk
 
 script:
-  - pytest -v -s ./hw1/test*.py
-  - pytest -v -s ./hw2/test*.py
-  - pytest -v -s ./hw3/test*.py
+  - pytest -vs ./hw1/test*.py
+  - pytest -vs ./hw2/test*.py
+  - pytest -vs ./hw3/test*.py
   - cp ./hw4/docker-compose.yml .
-  - pytest -v -s ./hw4/test*.py
-  - pytest -v -s ./hw5/test*.py
-  - pytest -v -s ./hw6/test*.py
-  - pytest -v -s ./hw12/test*.py
+  - pytest -vs ./hw4/test*.py
+  - pytest -vs ./hw5/test*.py
+  - pytest -vs ./hw6/test*.py
+  - pytest -vs ./hw12/test*.py
   - cp ./hw13/docker-compose.yml .
-  - pytest -v -s ./hw13/test*.py
-  - pytest -v -s ./hw14/test*.py
+  - pytest -vs ./hw13/test*.py
+  - pytest -vs ./hw14/test*.py
+  - pytest -vs ./hw15/test*.py --alluredir ./hw15/allure_json
+  - cat ./hw15/allure_json/*.json
+  - pytest -sv --folder=./hw16/ --file_name=access.log --file_number=one ./hw16/test*.py
+
+  - echo "Code Quality"
 
 
-  - pylint --disable=C0103,C0111,C0112,W0613,R0801,C0301,R0903,W0621,W0612,W0212 ./hw*/*.py
+  - pylint --disable=C0103,C0111,R1704,R0915,R0912,R0914,C0200,W0631,C0112,W0613,R0801,C0301,R0903,W0621,W0612,W0212 ./hw*/*.py
 
