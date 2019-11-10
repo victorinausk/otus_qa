@@ -2,8 +2,9 @@
 # pylint: disable=redefined-outer-name, unused-argument
 
 import pytest
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from .pages import LoginPage, ProductsPage, EditProductPage, AdminDashboardPage
 
 

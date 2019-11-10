@@ -20,8 +20,6 @@ def module_fixture(request):
     def fin():
         """Остановка окружения"""
         print("\n")
-        print("\n================================== HW 12 ============================================================")
-        print("\n")
 
     request.addfinalizer(fin)
 

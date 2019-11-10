@@ -1,0 +1,40 @@
+{
+  "name": "This test will be failed",
+  "status": "skipped",
+  "statusDetails": {
+    "message": "AssertionError: assert False",
+    "trace": "@allure.title(\"This test will be failed\")\n    @pytest.mark.xfail(reason='Так задумано')\n    def test_fail():\n>       assert False\nE       assert False\n\ntest_allure.py:15: AssertionError"
+  },
+  "start": 1572434056461,
+  "stop": 1572434056461,
+  "uuid": "9bc8b9e7-78d5-4d32-ba87-658138f9dc9d",
+  "historyId": "2e57d9e39dda3b5fb0c2bc311fd08242",
+  "testCaseId": "6c664a2714c8db0b58bb3c434ffb2e58",
+  "fullName": "test_allure#test_fail",
+  "labels": [
+    {
+      "name": "suite",
+      "value": "test_allure"
+    },
+    {
+      "name": "host",
+      "value": "edg-xps"
+    },
+    {
+      "name": "thread",
+      "value": "14037-MainThread"
+    },
+    {
+      "name": "framework",
+      "value": "pytest"
+    },
+    {
+      "name": "language",
+      "value": "cpython3"
+    },
+    {
+      "name": "package",
+      "value": "test_allure"
+    }
+  ]
+}

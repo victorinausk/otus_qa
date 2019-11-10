@@ -4,3 +4,8 @@ requests
 testcontainers
 selenium
 psutil
+pytest-html
+allure-pytest
+sqlalchemy
+pymysql
+
