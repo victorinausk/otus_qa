@@ -87,7 +87,6 @@ def opt_file_number(request):
 @pytest.fixture
 def request_count(get_files):
     """Fixture to count statistics"""
-    ip = []
     all_request_count = {}
     get_request_count = {}
     post_request_count = {}
