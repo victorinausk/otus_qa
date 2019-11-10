@@ -198,3 +198,17 @@ class UploadPage(BasePage):
 
     def save(self):
         click_via_script(self.driver, self.driver.find_element(*BaseLocators.SAVE_BUTTON))
+
+
+class CustomerPage(BasePage):
+
+    def open_customer(self):
+        click_via_script(self.driver, self.driver.find_element(*AdminPageLocators.CUSTOMERS))
+
+    def is_customer_on_page(self, customer):
+        try:
+
+            return self.driver.find_element(By.XPATH,
+                                            f'//td[contains(text(),"{customer}")]')
+        except NoSuchElementException:
+            return False

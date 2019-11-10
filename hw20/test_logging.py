@@ -6,7 +6,10 @@ Basic test for logging
 import os
 
 import pymysql
+import pytest
 from sqlalchemy import create_engine
+
+from .pages import LoginPage, CustomerPage
 
 
 def find_file(file_name):
@@ -47,7 +50,7 @@ def get_select_sql():
 def generate_customer():
     # engine = create_engine('mysql://root:my-secret-pw@localhost/opencart', echo=True) не работает с Python3
     try:
-        conn = pymysql.connect(host='127.0.0.1', user='root', password='my-secret-pw', db='opencart', charset='utf8')
+        conn = pymysql.connect(host='localhost', user='root', password='my-secret-pw', db='opencart', charset='utf8')
     except Exception:
         print("Error in MySQL connexion")
     else:
@@ -60,17 +63,45 @@ def generate_customer():
 
         except Exception:
             print("Error with query")
+
         else:
             print('===================================================================')
             print(cursor.fetchmany(size=1))
             print(cursor.rowcount)
             cursor.close()
             conn.close()
+    return True
 
 
-def test_sql(driver):
-    driver.get('https://localhost/admin')
-    generate_customer()
+@pytest.fixture
+def customer_page(driver):
+    return CustomerPage(driver)
+
+
+@pytest.fixture
+def login_page(driver):
+    """ Class init """
+    return LoginPage(driver)
+
+
+@pytest.fixture
+def login_logout(request, driver, login_page):
+    login_page.login(login='joe1', password='abc123')
+
+    def logout():
+        url = driver.current_url
+        url = url.replace("dashboard", "logout")
+        driver.get(url)
+        driver.delete_all_cookies()
+
+    request.addfinalizer(logout)
+
+
+def test_sql(login_logout, driver, customer_page):
+    assert generate_customer()
+    customer_page.open_customer()
+    print(driver.page_source)
+    assert customer_page.is_customer_on_page('test sql test sql')
 
 
 def test_logging(driver):

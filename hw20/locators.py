@@ -24,6 +24,7 @@ class AdminPageLocators:
     CATALOG = (By.XPATH, '//a[contains(text(), "Catalog")]')
     PRODUCTS = (By.XPATH, '//*[@id="catalog"]/ul/li/a[contains(@href, "product")]')
     DOWNLOADS = (By.XPATH, '//*[@id="menu"]/*[@id="catalog"]/ul/li/a[contains(@href, "download")]')
+    CUSTOMERS = (By.XPATH, '//*[@id="menu"]/*[@id="customer"]/ul/li/a[contains(@href, "customer")]')
 
 
 class ProductsPageLocators:
