@@ -16,7 +16,8 @@ RUN apt-get install curl
 # Chromedriver
 
 ENV CHROMEDRIVER_DIR /app
-RUN wget -O /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+ARG CROMEDRIVER_RELEASE
+RUN wget -O /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/${CROMEDRIVER_RELEASE}/chromedriver_linux64.zip
 RUN unzip /tmp/chromedriver_linux64.zip -d /app
 
 # Chrome
