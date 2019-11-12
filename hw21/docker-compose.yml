@@ -1,0 +1,11 @@
+version: '3'
+
+
+services:
+  server:
+    image: victorinausk/sftp:latest
+    hostname: server
+    ports:
+      - "2222:22"
+    volumes:
+      - ./uploads:/uploads
