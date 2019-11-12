@@ -19,16 +19,15 @@ def find_file(file_name):
     raise Exception("Files not found" + file_name + "\n")
 
 
-class ssh(object):
+class paramiko_ssh_client(object):
     """docstring"""
 
-    def __init__(self, host='localhost', user='master', pwd='master', port=2222, internal_port=22):
+    def __init__(self, host='localhost', user='master', pwd='master', port=2222):
         """Constructor"""
         self.host = host
         self.user = user
         self.pwd = pwd
         self.port = port
-        self.internal_port = internal_port
         self.client = None
 
     def create_client(self):
@@ -56,7 +55,7 @@ def test_ssh():
     """
      Test ssh
     """
-    ssh_client = ssh()
+    ssh_client = paramiko_ssh_client()
     ssh_client.create_client()
     ssh_client.execute_command('rm -rf *')
     data = ssh_client.execute_command('echo "hello world">> test.txt')
@@ -69,7 +68,7 @@ def test_sftp_upload():
     """
      Test sftp upload
     """
-    ssh_client = ssh()
+    ssh_client = paramiko_ssh_client()
     ssh_client.create_client()
     ftp = ssh_client.create_client().open_sftp()
     data = ftp.put(find_file('README.md'), 'README.md')
