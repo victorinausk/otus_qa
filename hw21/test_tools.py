@@ -19,7 +19,7 @@ def find_file(file_name):
     raise Exception("Files not found" + file_name + "\n")
 
 
-class paramiko_ssh_client(object):
+class paramiko_ssh_client():
     """docstring"""
 
     def __init__(self, host='localhost', user='master', pwd='master', port=2222):
