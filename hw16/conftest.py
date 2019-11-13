@@ -110,7 +110,7 @@ def reg_pattern():
         r'(?P<size>\S+)',  # size %b (careful, can be '-')
         r'"(?P<referrer>.*)"',  # referrer "%{Referer}i"
         r'"(?P<agent>.*)"',  # user agent "%{User-agent}i"
-        r'(?P<resp_time>\S+)'
+        r'(?P<resp_time>\S+)'  # response time 
 
     ]
     return re.compile(r'\s+'.join(parts) + r'\s*\Z')
