@@ -162,9 +162,10 @@ def request_count(get_files):
 
     c = {}
     for key, value in Counter(ip).most_common(10):
-        c["IP"] = key
-        c["Count"] = value
-        ip_list.append(c)
+        if value > 1:
+            c["IP"] = key
+            c["Count"] = value
+            ip_list.append(c)
 
     return request_statistic_list, ip_list, long_time_request_list, server_error_list, client_error_list
 
