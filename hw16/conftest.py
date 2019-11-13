@@ -131,6 +131,7 @@ def get_parsed_list(get_files):
 @pytest.fixture
 def request_count(get_parsed_list):
     """Fixture to count statistics"""
+    # Initiazlie required variables
     all_request_count = {}
     get_request_count = {}
     post_request_count = {}
@@ -138,9 +139,7 @@ def request_count(get_parsed_list):
     server_error_list = []
     client_error_list = []
 
-    # Initiazlie required variables
     log_data = get_parsed_list
-
     for resp_time in sorted(log_data, key=lambda k: k['resp_time'] and k['method'] in {'GET', 'POST'}, reverse=True)[
                      0:10]:
         long_time_request_list.append(parse_data(resp_time))
