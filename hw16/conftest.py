@@ -94,15 +94,7 @@ def parse_data(line):
     return k
 
 
-@pytest.fixture
-def request_count(get_files):
-    """Fixture to count statistics"""
-    all_request_count = {}
-    get_request_count = {}
-    post_request_count = {}
-    long_time_request_list = []
-    server_error_list = []
-    client_error_list = []
+def reg_pattern():
     # Regex for the common Apache log format.
     parts = [
 
@@ -121,16 +113,33 @@ def request_count(get_files):
         r'(?P<resp_time>\S+)'
 
     ]
-    pattern = re.compile(r'\s+'.join(parts) + r'\s*\Z')
+    return re.compile(r'\s+'.join(parts) + r'\s*\Z')
 
-    # Initiazlie required variables
-    log_data = []
 
+@pytest.fixture
+def get_parsed_list(get_files):
     # Get components from each line of the log file into a structured dict
+    log_data = []
+    pattern = reg_pattern()
     for i in get_files:
         with open(i, 'r') as logfile:
             for line in logfile.readlines():
                 log_data.append(pattern.match(line).groupdict())
+    return log_data
+
+
+@pytest.fixture
+def request_count(get_parsed_list):
+    """Fixture to count statistics"""
+    all_request_count = {}
+    get_request_count = {}
+    post_request_count = {}
+    long_time_request_list = []
+    server_error_list = []
+    client_error_list = []
+
+    # Initiazlie required variables
+    log_data = get_parsed_list
 
     for resp_time in sorted(log_data, key=lambda k: k['resp_time'] and k['method'] in {'GET', 'POST'}, reverse=True)[
                      0:10]:
