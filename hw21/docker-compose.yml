@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  mariadb:
+    image: 'bitnami/mariadb:10.3'
+    environment:
+      - MARIADB_USER=bn_opencart
+      - MARIADB_DATABASE=bitnami_opencart
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'mariadb_data:/bitnami'
+  opencart:
+    image: victorinausk/sftp:latest
+    environment:
+      - MARIADB_HOST=mariadb
+      - MARIADB_PORT_NUMBER=3306
+      - OPENCART_DATABASE_USER=bn_opencart
+      - OPENCART_DATABASE_NAME=bitnami_opencart
+      - OPENCART_HOST=localhost
+      - ALLOW_EMPTY_PASSWORD=yes
+      - VIRTUAL_HOST=localhost
+      - OPENCART_HTTP_TIMEOUT="120"
+      - OPENCART_PASSWORD="abc123"
+      - OPENCART_USERNAME="joe1"
+    ports:
+      - '80:8181'
+      - '2222:22'
+    volumes:
+      - opencart_data:/bitnami
+      - ./uploads:/uploads
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
+  opencart_data:
+    driver: local

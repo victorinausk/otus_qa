@@ -8,4 +8,6 @@ pytest-html
 allure-pytest
 sqlalchemy
 pymysql
+paramiko
+
 

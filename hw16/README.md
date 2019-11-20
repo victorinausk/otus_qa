@@ -16,8 +16,6 @@
     5. Собранная статистика должна быть сохранена в json файл
     6. Должен быть README файл, который описывает как работает скрипт
 
-    Лог получен по данной ссылке с последующим сокращением записей
-    http://www.almhuette-raith.at/apache-log/access.log
-
+   
     Запуск скрипта
     pytest -sv --folder=./hw16/ --file_name=access.log --file_number=one ./hw16/test*.py

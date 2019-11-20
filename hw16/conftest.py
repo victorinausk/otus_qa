@@ -84,15 +84,17 @@ def opt_file_number(request):
     return request.config.getoption("--file_number")
 
 
-@pytest.fixture
-def request_count(get_files):
-    """Fixture to count statistics"""
-    all_request_count = {}
-    get_request_count = {}
-    post_request_count = {}
-    long_time_request_list = []
-    server_error_list = []
-    client_error_list = []
+def parse_data(line):
+    k = {}
+    k["Date_Time"] = line['time']
+    k["IP"] = line['host']
+    k["Status_code"] = line['status']
+    k["Method"] = line['method']
+    k["Url"] = line['request']
+    return k
+
+
+def reg_pattern():
     # Regex for the common Apache log format.
     parts = [
 
@@ -108,63 +110,70 @@ def request_count(get_files):
         r'(?P<size>\S+)',  # size %b (careful, can be '-')
         r'"(?P<referrer>.*)"',  # referrer "%{Referer}i"
         r'"(?P<agent>.*)"',  # user agent "%{User-agent}i"
+        r'(?P<resp_time>\S+)'  # response time
+
     ]
-    pattern = re.compile(r'\s+'.join(parts) + r'\s*\Z')
+    return re.compile(r'\s+'.join(parts) + r'\s*\Z')
 
-    # Initiazlie required variables
-    log_data = []
 
+@pytest.fixture
+def get_parsed_list(get_files):
     # Get components from each line of the log file into a structured dict
+    log_data = []
+    pattern = reg_pattern()
     for i in get_files:
         with open(i, 'r') as logfile:
             for line in logfile.readlines():
                 log_data.append(pattern.match(line).groupdict())
+    return log_data
 
-    for i in sorted(log_data, key=lambda k: k['size'], reverse=True)[0:10]:
-        k = {}
-        k["Date_Time"] = i['time']
-        k["IP"] = i['host']
-        k["Status_code"] = i['status']
-        k["Method"] = i['method']
-        k["Url"] = i['request']
-        long_time_request_list.append(k)
 
-    for i in list(filter(lambda k: k['status'].startswith('5'), log_data)):
-        k = {}
-        k["IP"] = i['host']
-        k["Status_code"] = i['status']
-        k["Method"] = i['method']
-        k["Url"] = i['request']
-        server_error_list.append(k)
+@pytest.fixture
+def request_count(get_parsed_list):
+    """Fixture to count statistics"""
+    # Initiazlie required variables
+    all_request_count = {}
+    get_request_count = {}
+    post_request_count = {}
+    long_time_request_list = []
+    server_error_list = []
+    client_error_list = []
 
-    for i in list(filter(lambda k: k['status'].startswith('4'), log_data)):
-        k = {}
-        k["IP"] = i['host']
-        k["Status_code"] = i['status']
-        k["Method"] = i['method']
-        k["Url"] = i['request']
-        client_error_list.append(k)
+    log_data = get_parsed_list
+    for resp_time in sorted(log_data, key=lambda k: k['resp_time'] and k['method'] in {'GET', 'POST'}, reverse=True)[
+                     0:10]:
+        long_time_request_list.append(parse_data(resp_time))
+
+    for server_error in list(
+            filter(lambda k: k['status'].startswith('5') and k['method'] in {'GET', 'POST'}, log_data))[0:10]:
+        server_error_list.append(parse_data(server_error))
+
+    for client_error in list(
+            filter(lambda k: k['status'].startswith('4') and k['method'] in {'GET', 'POST'}, log_data))[0:10]:
+        client_error_list.append(parse_data(client_error))
 
     get_request_count["Request_type"] = "GET REQUESTS"
     get_request_count["Request_count"] = len(list(filter(lambda k: k['method'] == 'GET', log_data)))
     post_request_count["Request_type"] = "POST REQUESTS"
     post_request_count["Request_count"] = len(list(filter(lambda k: k['method'] == 'POST', log_data)))
     all_request_count["Request_type"] = "ALL REQUESTS"
-    all_request_count["Request_count"] = len(log_data)
+    all_request_count["Request_count"] = len(list(filter(lambda k: k['method'] == 'GET', log_data))) + len(
+        list(filter(lambda k: k['method'] == 'POST', log_data)))
 
     request_statistic_list = []
     request_statistic_list.append(get_request_count)
     request_statistic_list.append(post_request_count)
     request_statistic_list.append(all_request_count)
 
-    ip = list(map(lambda k: k['host'], log_data))
+    ip = list(map(lambda k: k['host'], list(filter(lambda k: k['method'] in {'GET', 'POST'}, log_data))))
     ip_list = []
 
     c = {}
     for key, value in Counter(ip).most_common(10):
-        c["IP"] = key
-        c["Count"] = value
-        ip_list.append(c)
+        if value > 1:
+            c["IP"] = key
+            c["Count"] = value
+            ip_list.append(c)
 
     return request_statistic_list, ip_list, long_time_request_list, server_error_list, client_error_list
 
@@ -173,17 +182,16 @@ def request_count(get_files):
 def save_to_json(request_count, request, get_files):
     """Fixture to save result yo log"""
     path = get_files[0].replace(request.config.getoption("--file_name"), '')
-    print(path)
     request_statistic_list, ip_list, long_time_request_list, server_error_list, client_error_list = request_count
     all_statistic_list = {}
-    all_statistic_list["Requests statistic"] = request_statistic_list, server_error_list
+    all_statistic_list["Requests statistic"] = request_statistic_list
     all_statistic_list["Top 10 IP"] = ip_list
     all_statistic_list["Top 10 long requests"] = long_time_request_list
-    all_statistic_list["Server error"] = server_error_list
-    all_statistic_list["Client error"] = client_error_list
-    print(all_statistic_list)
+    all_statistic_list["Top 10 Server error"] = server_error_list
+    all_statistic_list["Top 10 Client error"] = client_error_list
     with open(path + "data_file.json", "w") as write_file:
-        json.dump(all_statistic_list, write_file)
+        json.dump(all_statistic_list, write_file, indent=2)
+    print(json.dumps(all_statistic_list, indent=2))
 
 
 @pytest.fixture
