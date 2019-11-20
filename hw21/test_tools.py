@@ -87,4 +87,4 @@ def test_reset_apache():
     print(data)
     data = ssh_client.execute_command('systemctl is-active apache2')
     # вдокере не доступна systemd
-    assert data == b'Failed to connect to bus: No such file or directory\n'
+    assert data == b'bash: systemctl: command not found\n'
