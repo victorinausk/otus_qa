@@ -1,5 +1,4 @@
-FROM bitnami/opencart
-LABEL maintainer "Victory"
+FROM ubuntu:latest
 
 ARG SSH_MASTER_USER
 ARG SSH_MASTER_PASS
@@ -10,8 +9,7 @@ RUN apt-get update \
     sudo \
     openssh-server \
     lftp \
-    apt-utils\
-    systemd
+    apt-utils
 
 COPY ssh_config /etc/ssh/ssh_config
 COPY sshd_config /etc/ssh/sshd_config
@@ -27,12 +25,3 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 CMD tail -f /dev/null
-
-## Enable mod_ratelimit module
-RUN sed -i -r 's/#LoadModule ratelimit_module/LoadModule ratelimit_module/' /opt/bitnami/apache/conf/httpd.conf
-
-## Modify the ports used by Apache by default
-# It is also possible to change these environment variables at runtime
-ENV APACHE_HTTP_PORT_NUMBER=80
-ENV APACHE_HTTPS_PORT_NUMBER=8143
-EXPOSE 80 8143

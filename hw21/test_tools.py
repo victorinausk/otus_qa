@@ -74,3 +74,17 @@ def test_sftp_upload():
     data = ftp.put(find_file('README.md'), 'README.md')
     data = ssh_client.execute_command('ls')
     assert data == b'README.md\ntest.txt\n'
+
+
+def test_reset_apache():
+    """
+    Reset apache vi ssh and test response
+    :return:
+    """
+    ssh_client = paramiko_ssh_client()
+    ssh_client.create_client()
+    data = ssh_client.execute_command('systemctl restart apache2')
+    print(data)
+    data = ssh_client.execute_command('systemctl is-active apache2')
+    # вдокере не доступна systemd
+    assert data == b'Failed to connect to bus: No such file or directory\n'
