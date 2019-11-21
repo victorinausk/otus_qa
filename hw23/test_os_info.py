@@ -6,6 +6,10 @@ import subprocess
 import sys
 
 
+def getAllInterfaces():
+    return os.listdir('/sys/class/net/')
+
+
 def get_platform():
     """Platform parser"""
     platforms = {
@@ -26,10 +30,14 @@ def get_system_info():
     :return:
     """
     try:
-        cpu_info = subprocess.check_output(['lscpu']).decode()
+        cpu_info = subprocess.check_output(['lscpu']).decode("utf8").replace("\n", "")
     except subprocess.CalledProcessError as e:
         cpu_info = str(platform.processor())
-
+    try:
+        pl = subprocess.Popen(['ps', '-U', '0'], stdout=subprocess.PIPE).communicate()[0].decode("utf8").replace("\n",
+                                                                                                                 "")
+    except subprocess.CalledProcessError as e:
+        pass
     os_info = {
         'os_information': get_platform() + ' ' + platform.release(),
         'interpreter:': platform.architecture(),
@@ -39,6 +47,8 @@ def get_system_info():
         'cpu_info': cpu_info,
         'python_core': sys.version,
         'default_path': os.getenv('PATH'),
+        'network interfaces': getAllInterfaces(),
+        'processes': pl
     }
 
     print(json.dumps(os_info, indent=4))
