@@ -1,0 +1,19 @@
+web:
+  image: chrisss404/opencart:latest-php5.5
+  links:
+    - db
+  ports:
+    - "80:80"
+  environment:
+    - MYSQL_DATABASE=opencart
+    - MYSQL_ROOT_PASSWORD=my-secret-pw
+    - MYSQL_USER=sql-user-1
+    - MYSQL_PASSWORD=sql-pwd-user-1
+    - SHOP_ADMIN_USER=joe1
+    - SHOP_ADMIN_PASSWORD=abc123
+    - VIRTUAL_HOST=localhost
+
+db:
+  image: chrisss404/opencart:latest-mysql5.5
+  ports:
+    - "3306:3306"
