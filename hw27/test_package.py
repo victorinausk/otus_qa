@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+"""Тестирование установки пакета"""
 import pkg_resources
 
 
