@@ -9,5 +9,4 @@ allure-pytest
 sqlalchemy
 pymysql
 paramiko
-
-
+py_w3c

@@ -16,14 +16,13 @@ services:
       - MARIADB_PORT_NUMBER=3306
       - OPENCART_DATABASE_USER=bn_opencart
       - OPENCART_DATABASE_NAME=bitnami_opencart
-      - OPENCART_HOST=localhost
       - ALLOW_EMPTY_PASSWORD=yes
       - VIRTUAL_HOST=localhost
-      - OPENCART_HTTP_TIMEOUT="120"
-      - OPENCART_PASSWORD="abc123"
-      - OPENCART_USERNAME="joe1"
+      - OPENCART_HTTP_TIMEOUT=120
+      - OPENCART_PASSWORD=abc123
+      - OPENCART_USERNAME=joe1
     ports:
-      - '80:8181'
+      - '80:80'
       - '2222:22'
     volumes:
       - opencart_data:/bitnami
