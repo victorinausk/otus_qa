@@ -101,6 +101,7 @@ New Category Error
         Given browser is opened to admin page by user "demo" and password "demo"
         When User added new category "new category" with tag "new tag"
         Then Category Permissiond denied
+        [Teardown]    Close Browser
 
 
 
