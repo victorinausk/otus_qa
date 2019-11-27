@@ -5,7 +5,7 @@ Library                 Selenium2Library
 
 *** Variables ***
 ${SERVER}               http://google.com
-${BROWSER}              Firefox
+${BROWSER}              Chrome
 ${DELAY}                0
 
 
