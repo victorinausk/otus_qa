@@ -12,3 +12,5 @@ paramiko
 py_w3c
 setuptools
 wheel
+robotframework
+robotframework-selenium2library
