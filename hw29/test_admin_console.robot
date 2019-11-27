@@ -7,7 +7,7 @@ Library           Selenium2Library
 
 
 *** Variables ***
-${BROWSER}        Chrome
+${BROWSER}        headlesschrome
 ${DELAY}          0
 ${LOGIN URL}      https://demo.opencart.com/admin/
 

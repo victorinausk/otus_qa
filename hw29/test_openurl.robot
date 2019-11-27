@@ -5,7 +5,7 @@ Library                 Selenium2Library
 
 *** Variables ***
 ${SERVER}               http://google.com
-${BROWSER}              Chrome
+${BROWSER}              headlesschrome
 ${DELAY}                1
 
 
