@@ -6,7 +6,7 @@ Library                 Selenium2Library
 *** Variables ***
 ${SERVER}               http://google.com
 ${BROWSER}              Chrome
-${DELAY}                0
+${DELAY}                1
 
 
 *** Keywords ***
