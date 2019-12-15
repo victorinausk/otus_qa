@@ -10,3 +10,5 @@ sqlalchemy
 pymysql
 paramiko
 py_w3c
+setuptools
+wheel
