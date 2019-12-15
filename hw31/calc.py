@@ -3,14 +3,18 @@
 
 
 class Calc:
-    def add(self, a, b):
+    @staticmethod
+    def add(a, b):
         return a + b
 
-    def sub(self, a, b):
+    @staticmethod
+    def sub(a, b):
         return a - b
 
-    def mul(self, a, b):
+    @staticmethod
+    def mul(a, b):
         return a * b
 
-    def div(self, a, b):
+    @staticmethod
+    def div(a, b):
         return a / b

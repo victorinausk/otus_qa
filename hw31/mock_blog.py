@@ -8,7 +8,7 @@ class Blog:
         self.name = name
 
     @staticmethod
-    def posts(self):
+    def posts():
         response = requests.get("https://jsonplaceholder.typicode.com/posts")
 
         return response.json()
