@@ -52,4 +52,5 @@ class TestCalc(TestCase):
 class TestCalculator(TestCase):
     @patch('hw31.calc.Calc.add', return_value=9)
     def test_sum(self, add):
+        """Wrong sum operation test"""
         self.assertEqual(add(2, 3), 9)
