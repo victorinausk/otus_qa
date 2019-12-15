@@ -7,6 +7,7 @@ class Blog:
     def __init__(self, name):
         self.name = name
 
+    @staticmethod
     def posts(self):
         response = requests.get("https://jsonplaceholder.typicode.com/posts")
 

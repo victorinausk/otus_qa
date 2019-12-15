@@ -3,14 +3,14 @@
 
 
 class Calc:
-    def add(a, b):
+    def add(self, a, b):
         return a + b
 
-    def sub(a, b):
+    def sub(self, a, b):
         return a - b
 
-    def mul(a, b):
+    def mul(self, a, b):
         return a * b
 
-    def div(a, b):
+    def div(self, a, b):
         return a / b
